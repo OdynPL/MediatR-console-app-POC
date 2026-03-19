@@ -1,7 +1,6 @@
 using PersonManager.Domain;
 using PersonManager.DTO;
 
-
 namespace PersonManager.Services
 {
     public interface ICompanyService
