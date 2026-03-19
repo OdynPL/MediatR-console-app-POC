@@ -30,6 +30,18 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+      - name: Extract version from csproj
+        id: get_version
+        run: |
+          $version = Select-String -Path PersonManager/PersonManager.csproj -Pattern '<Version>(.*)</Version>' | ForEach-Object { $_.Matches[0].Groups[1].Value }
+          echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "::set-output name=version::$version"
+      - name: Create git tag
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag v$env:VERSION
+          git push origin v$env:VERSION
       - name: Restore dependencies
         run: dotnet restore PersonManager/PersonManager.csproj
       - name: Build
@@ -51,16 +63,16 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         with:
-          tag_name: v1.0.0
-          release_name: PersonManager v1.0.0
+          tag_name: v${{ env.VERSION }}
+          release_name: PersonManager v${{ env.VERSION }}
           draft: false
           prerelease: false
       - name: Upload MSI to Release
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: PersonManagerInstaller.msi
