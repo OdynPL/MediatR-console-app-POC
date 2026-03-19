@@ -27,6 +27,11 @@ namespace PersonManager
                 Console.WriteLine("4. Pobierz osobę po ID");
                 Console.WriteLine("5. Zaktualizuj osobę");
                 Console.WriteLine("6. Usuń osobę");
+                Console.WriteLine("7. Utwórz projekt");
+                Console.WriteLine("8. Utwórz firmę");
+                Console.WriteLine("9. Utwórz adres");
+                Console.WriteLine("10. Dodaj osobę z adresem i firmą");
+                Console.WriteLine("11. Dodaj osobę do projektu");
                 Console.WriteLine("ESC - zakończ program");
 
                 var key = Console.ReadKey(true);
@@ -131,6 +136,56 @@ namespace PersonManager
                             {
                                 Console.WriteLine("Nieprawidłowe ID.");
                             }
+                            break;
+                        case "7":
+                            Console.WriteLine("Podaj tytuł projektu:");
+                            var projectTitle = Console.ReadLine();
+                            Console.WriteLine("Podaj ID członków (oddzielone przecinkami):");
+                            var memberIdsStr = Console.ReadLine();
+                            var memberIds = memberIdsStr?.Split(',').Select(s => int.TryParse(s.Trim(), out var mid) ? mid : 0).Where(mid => mid > 0).ToList() ?? new List<int>();
+                            var projectResult = await mediator.Send(new CreateProjectCommand { Title = projectTitle ?? "Brak tytułu", MemberIds = memberIds }, cts.Token);
+                            Console.WriteLine(projectResult > 0 ? $"Utworzono projekt o ID: {projectResult}" : "Błąd podczas tworzenia projektu.");
+                            break;
+                        case "8":
+                            Console.WriteLine("Podaj nazwę firmy:");
+                            var companyName = Console.ReadLine();
+                            var companyResult = await mediator.Send(new CreateCompanyCommand { Name = companyName ?? "Brak nazwy" }, cts.Token);
+                            Console.WriteLine(companyResult > 0 ? $"Utworzono firmę o ID: {companyResult}" : "Błąd podczas tworzenia firmy.");
+                            break;
+                        case "9":
+                            Console.WriteLine("Podaj ulicę:");
+                            var street = Console.ReadLine();
+                            Console.WriteLine("Podaj miasto:");
+                            var city9 = Console.ReadLine();
+                            Console.WriteLine("Podaj kraj:");
+                            var country = Console.ReadLine();
+                            var addressResult = await mediator.Send(new CreateAddressCommand { Street = street ?? "Brak ulicy", City = city9 ?? "Brak miasta", Country = country ?? "Brak kraju" }, cts.Token);
+                            Console.WriteLine(addressResult > 0 ? $"Utworzono adres o ID: {addressResult}" : "Błąd podczas tworzenia adresu.");
+                            break;
+                        case "10":
+                            Console.WriteLine("Podaj imię:");
+                            var name10 = Console.ReadLine();
+                            Console.WriteLine("Podaj wiek:");
+                            var ageStr10 = Console.ReadLine();
+                            int.TryParse(ageStr10, out var age10);
+                            Console.WriteLine("Podaj ID adresu:");
+                            var addressIdStr = Console.ReadLine();
+                            int.TryParse(addressIdStr, out var addressId);
+                            Console.WriteLine("Podaj ID firmy:");
+                            var companyIdStr = Console.ReadLine();
+                            int.TryParse(companyIdStr, out var companyId);
+                            var personResult10 = await mediator.Send(new CreatePersonCommand(name10 ?? "Brak imienia", age10, addressId, companyId), cts.Token);
+                            Console.WriteLine(personResult10.Success ? $"Utworzono osobę: {personResult10.Name}, wiek: {personResult10.Age}, adres ID: {addressId}, firma ID: {companyId}" : $"Błąd: {personResult10.ErrorMessage}");
+                            break;
+                        case "11":
+                            Console.WriteLine("Podaj ID osoby:");
+                            var personIdStr = Console.ReadLine();
+                            int.TryParse(personIdStr, out var personId);
+                            Console.WriteLine("Podaj ID projektu:");
+                            var projectIdStr = Console.ReadLine();
+                            int.TryParse(projectIdStr, out var projectId);
+                            var addToProjectResult = await mediator.Send(new AddPersonToProjectCommand { PersonId = personId, ProjectId = projectId }, cts.Token);
+                            Console.WriteLine(addToProjectResult ? "Osoba dodana do projektu." : "Błąd podczas dodawania osoby do projektu.");
                             break;
                         default:
                             Console.WriteLine("Nieznana opcja.");
