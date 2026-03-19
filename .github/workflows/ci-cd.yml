@@ -65,12 +65,13 @@ jobs:
     needs: [test, format]
     steps:
       - uses: actions/checkout@v4
-        - name: Convert .cs files to UTF-8
-          run: |
-            Get-ChildItem -Path PersonManager -Recurse -Include *.cs | ForEach-Object {
-              $content = Get-Content $_.FullName
-              Set-Content -Path $_.FullName -Value $content -Encoding UTF8
-            }
+      - name: Convert .cs files to UTF-8
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path PersonManager -Recurse -Include *.cs | ForEach-Object {
+            $content = Get-Content $_.FullName
+            Set-Content -Path $_.FullName -Value $content -Encoding UTF8
+          }
       - name: Security scan (Semgrep)
         run: |
           pip install semgrep
