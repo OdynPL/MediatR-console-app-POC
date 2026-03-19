@@ -13,8 +13,8 @@ namespace PersonManager.Handlers
         }
         public async Task<bool> Handle(DeletePersonCommand request, CancellationToken cancellationToken)
         {
-            var person = await _repository.GetByIdAsync(request.Id, cancellationToken);
-            if (person == null) return false;
+            var result = await _repository.GetByIdAsync(request.Id, cancellationToken);
+            if (!result.Success || result.Data == null) return false;
             await _repository.DeleteAsync(request.Id, cancellationToken);
             return true;
         }
