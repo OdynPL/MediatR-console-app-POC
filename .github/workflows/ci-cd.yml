@@ -47,7 +47,7 @@ jobs:
         with:
           name: PersonManagerInstaller
           path: PersonManagerInstaller.msi
-  test-main:
+  test:
     runs-on: windows-latest
     needs: build
     steps:
@@ -58,26 +58,13 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Test (main project)
         run: dotnet test PersonManager/PersonManager.csproj --no-build --verbosity normal
-  test-unit:
-    runs-on: windows-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
       - name: Test (unit tests)
         run: dotnet test PersonManager.Tests/PersonManager.Tests.csproj --no-build --verbosity normal
   security:
     runs-on: windows-latest
-    needs: test-unit
+    needs: [test, format]
     steps:
       - uses: actions/checkout@v4
-      - name: Security scan (Snyk)
-        run: |
-          npm install -g snyk
-          snyk test || echo "Snyk scan skipped (no token)"
       - name: Security scan (Semgrep)
         run: |
           pip install semgrep
