@@ -26,8 +26,8 @@ jobs:
       - name: Create MSI installer
         run: |
           dotnet tool install --global wix --version 4.0.4
-          wix new installer -o MediatRAppInstaller.wxs -n MediatRApp -p publish
-          wix build MediatRAppInstaller.wxs -o MediatRAppInstaller.msi
+          candle MediatRAppInstaller.wxs -o MediatRAppInstaller.wixobj
+          light MediatRAppInstaller.wixobj -o MediatRAppInstaller.msi
       - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
         with:

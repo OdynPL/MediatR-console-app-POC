@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="MediatRAppInstaller" Manufacturer="YourCompany" Version="1.0.0" Language="1033" Platform="x64" />
+  <Directory Id="TARGETDIR" Name="SourceDir">
+    <Directory Id="ProgramFilesFolder">
+      <Directory Id="INSTALLFOLDER" Name="MediatRApp">
+        <Component Id="MediatRAppExe" Guid="*">
+          <File Source="publish\MediatRApp.exe" />
+        </Component>
+      </Directory>
+    </Directory>
+  </Directory>
+  <Feature Id="MainFeature" Title="MediatRApp" Description="MediatR Console App" Level="1">
+    <ComponentRef Id="MediatRAppExe" />
+  </Feature>
+</Wix>
