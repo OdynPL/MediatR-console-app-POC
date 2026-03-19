@@ -5,7 +5,7 @@ namespace PersonManager.Commands
 {
     public class CreateProjectCommand : IRequest<int>
     {
-        public string Title { get; set; }
-        public List<int> MemberIds { get; set; }
+        public required string Title { get; set; }
+        public required List<int> MemberIds { get; set; }
     }
 }

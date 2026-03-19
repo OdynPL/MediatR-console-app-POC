@@ -4,6 +4,6 @@ namespace PersonManager.Commands
 {
     public class CreateCompanyCommand : IRequest<int>
     {
-        public string Name { get; set; }
+        public required string Name { get; set; }
     }
 }
