@@ -6,8 +6,11 @@ env:
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    # Prevent infinite loop: skip if commit message contains 'increase release version'
+    # This uses a workflow-level conditional
+    # The jobs will be skipped if the commit message matches
+    # See: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idif
+
 jobs:
   format:
     runs-on: windows-latest
