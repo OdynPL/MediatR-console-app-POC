@@ -91,7 +91,7 @@ namespace PersonManager.Repositories
 
         public IQueryable<Person> GetQueryable()
         {
-                return _db.People.AsQueryable();
+            return _db.People.AsQueryable();
         }
     }
 }
