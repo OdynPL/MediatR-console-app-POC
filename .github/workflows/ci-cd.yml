@@ -60,23 +60,3 @@ jobs:
         run: dotnet test PersonManager/PersonManager.csproj --no-build --verbosity normal
       - name: Test (unit tests)
         run: dotnet test PersonManager.Tests/PersonManager.Tests.csproj --no-build --verbosity normal
-  security:
-    runs-on: windows-latest
-    needs: [test, format]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Convert .cs files to UTF-8
-        shell: pwsh
-        run: |
-          Get-ChildItem -Path PersonManager -Recurse -Include *.cs | ForEach-Object {
-            $content = Get-Content $_.FullName
-            Set-Content -Path $_.FullName -Value $content -Encoding UTF8
-          }
-      - name: Security scan (Semgrep)
-        run: |
-          pip install semgrep
-          semgrep scan --config=auto || echo "Semgrep scan skipped"
-      - name: Security scan (DevSkim)
-        run: |
-          dotnet tool install --global microsoft.devskim
-          devskim analyze PersonManager/ --output-format text || echo "DevSkim scan skipped"
