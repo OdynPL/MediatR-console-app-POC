@@ -18,7 +18,7 @@ namespace PersonManager
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite("Data Source=app.db"));
             services.AddScoped<IPersonRepository, PersonRepository>();
-            services.AddScoped<PersonManager.UnitOfWork.IUnitOfWork, PersonManager.UnitOfWork.UnitOfWork>();
+            services.AddScoped<UnitOfWork.IUnitOfWork, UnitOfWork.UnitOfWork>();
             services.AddScoped<IPersonService, PersonService>();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreatePersonCommandHandler).Assembly));
             services.AddScoped<IWeatherService, WeatherService>();

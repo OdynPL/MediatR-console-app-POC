@@ -9,6 +9,6 @@ namespace PersonManager.Services
         Task<DTO.RepositoryResult<List<Person>>> GetAllPersonsAsync(CancellationToken cancellationToken = default);
         Task<DTO.RepositoryResult<Person>> UpdatePersonAsync(Person person, CancellationToken cancellationToken = default);
         Task<DTO.RepositoryResult<bool>> DeletePersonAsync(int id, CancellationToken cancellationToken = default);
-        IQueryable<PersonManager.Domain.Person> GetQueryablePersons();
+        IQueryable<Person> GetQueryablePersons();
     }
 }

@@ -9,10 +9,22 @@ namespace PersonManager.UnitOfWork
         private readonly AppDbContext _db;
         private IDbContextTransaction? _transaction;
         public IPersonRepository PersonRepository { get; }
-        public UnitOfWork(AppDbContext db, IPersonRepository personRepository)
+        public IAddressRepository AddressRepository { get; }
+        public ICompanyRepository CompanyRepository { get; }
+        public IProjectRepository ProjectRepository { get; }
+
+        public UnitOfWork(
+            AppDbContext db,
+            IPersonRepository personRepository,
+            IAddressRepository addressRepository,
+            ICompanyRepository companyRepository,
+            IProjectRepository projectRepository)
         {
             _db = db;
             PersonRepository = personRepository;
+            AddressRepository = addressRepository;
+            CompanyRepository = companyRepository;
+            ProjectRepository = projectRepository;
         }
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
