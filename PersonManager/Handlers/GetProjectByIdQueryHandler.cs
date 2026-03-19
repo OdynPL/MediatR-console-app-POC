@@ -15,6 +15,8 @@ namespace PersonManager.Handlers
         public async Task<Project> Handle(GetProjectByIdQuery request, CancellationToken cancellationToken)
         {
             var result = await _projectService.GetProjectByIdAsync(request.Id, cancellationToken);
+            if (result.Data == null)
+                return default!;
             return result.Data;
         }
     }

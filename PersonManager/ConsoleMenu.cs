@@ -223,26 +223,26 @@ namespace PersonManager
             var addToProjectResult = await _mediator.Send(new AddPersonToProjectCommand { PersonId = personId.Value, ProjectId = projectId.Value });
             Console.WriteLine(addToProjectResult ? "Osoba dodana do projektu." : "Błąd podczas dodawania osoby do projektu.");
         }
-            // Helper methods for input validation
-            private int? ReadIntInput(string prompt)
-            {
-                Console.WriteLine(prompt);
-                var input = Console.ReadLine();
-                if (int.TryParse(input, out var value))
-                    return value;
-                return null;
-            }
+        // Helper methods for input validation
+        private int? ReadIntInput(string prompt)
+        {
+            Console.WriteLine(prompt);
+            var input = Console.ReadLine();
+            if (int.TryParse(input, out var value))
+                return value;
+            return null;
+        }
 
-            private List<int> ReadIntListInput(string prompt)
-            {
-                Console.WriteLine(prompt);
-                var input = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(input))
-                    return new List<int>();
-                return input.Split(',')
-                    .Select(s => int.TryParse(s.Trim(), out var mid) ? mid : 0)
-                    .Where(mid => mid > 0)
-                    .ToList();
-            }
+        private List<int> ReadIntListInput(string prompt)
+        {
+            Console.WriteLine(prompt);
+            var input = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(input))
+                return new List<int>();
+            return input.Split(',')
+                .Select(s => int.TryParse(s.Trim(), out var mid) ? mid : 0)
+                .Where(mid => mid > 0)
+                .ToList();
+        }
     }
 }

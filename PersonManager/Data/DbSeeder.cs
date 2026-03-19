@@ -60,16 +60,20 @@ namespace PersonManager.Data
                 };
 
                 // Dodaj do mieszkańców adresu i pracowników firmy
-                person.Address.Residents.Add(person);
-                person.Company.Employees.Add(person);
+                if (person.Address != null)
+                    person.Address.Residents.Add(person);
+                if (person.Company != null)
+                    person.Company.Employees.Add(person);
 
                 // Dodaj projekty (każda osoba bierze udział w kilku)
                 var personProjects = rnd.Next(2, 8);
                 for (int j = 0; j < personProjects; j++)
                 {
                     var project = projects[rnd.Next(projects.Count)];
-                    person.Projects.Add(project);
-                    project.Members.Add(person);
+                    if (person.Projects != null)
+                        person.Projects.Add(project);
+                    if (project.Members != null)
+                        project.Members.Add(person);
                 }
 
                 db.People.Add(person);

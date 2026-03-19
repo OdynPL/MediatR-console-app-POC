@@ -6,6 +6,7 @@ using PersonManager.Repositories;
 using PersonManager.Data;
 using PersonManager.Services;
 using PersonManager.Handlers;
+using Microsoft.Extensions.Configuration;
 
 namespace PersonManager
 {
@@ -15,8 +16,17 @@ namespace PersonManager
         {
             var services = new ServiceCollection();
             services.AddLogging();
+
+            // Wczytaj konfigurację z appsettings.json
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            var connectionString = configuration.GetConnectionString("Default");
+            services.AddSingleton(configuration);
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite("Data Source=app.db"));
+                options.UseSqlite(connectionString));
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
