@@ -1,10 +1,10 @@
 using PersonManager.Domain;
-using Xunit;
 namespace PersonManager.Tests
 {
     public class PersonTests
     {
-          public void Person_CreatedWithName_IsNotNull()
+        [Fact]
+        public void Person_CreatedWithName_IsNotNull()
         {
             // Arrange
             var person = new Person { Name = "Adam" };
