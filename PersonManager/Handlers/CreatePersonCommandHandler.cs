@@ -21,13 +21,13 @@ namespace PersonManager.Handlers
             if (string.IsNullOrWhiteSpace(request.Name))
             {
                 response.Success = false;
-                response.ErrorMessage = "Imię nie może być puste.";
+                response.ErrorMessage = GlobalConfig.PersonNameEmptyError;
                 return response;
             }
             if (request.Age <= 0)
             {
                 response.Success = false;
-                response.ErrorMessage = "Wiek musi być dodatni.";
+                response.ErrorMessage = GlobalConfig.PersonAgePositiveError;
                 return response;
             }
             try

@@ -10,7 +10,7 @@ namespace PersonManager.Validators
             RuleFor(x => x.Street)
                 .NotEmpty().WithMessage("Ulica nie może być pusta.");
             RuleFor(x => x.City)
-                .NotEmpty().WithMessage("Miasto nie może być puste.");
+                .NotEmpty().WithMessage(GlobalConfig.CityEmptyError);
             RuleFor(x => x.Country)
                 .NotEmpty().WithMessage("Kraj nie może być pusty.");
         }

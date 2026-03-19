@@ -19,24 +19,24 @@ namespace PersonManager
             {
                 Console.Clear();
                 Console.WriteLine("Wybierz opcję:");
-                Console.WriteLine("1. Utwórz osobę");
-                Console.WriteLine("2. Sprawdź pogodę");
-                Console.WriteLine("3. Pobierz wszystkie osoby");
-                Console.WriteLine("4. Pobierz osobę po ID");
-                Console.WriteLine("5. Zaktualizuj osobę");
-                Console.WriteLine("6. Usuń osobę");
-                Console.WriteLine("7. Utwórz projekt");
-                Console.WriteLine("8. Utwórz firmę");
-                Console.WriteLine("9. Utwórz adres");
-                Console.WriteLine("10. Dodaj osobę z adresem i firmą");
-                Console.WriteLine("11. Dodaj osobę do projektu");
-                Console.WriteLine("ESC - zakończ program");
+                Console.WriteLine($"{(int)GlobalConfig.MenuOption.CreatePerson}. Utwórz osobę");
+                Console.WriteLine($"{(int)GlobalConfig.MenuOption.GetWeather}. Sprawdź pogodę");
+                Console.WriteLine($"{(int)GlobalConfig.MenuOption.GetAllPersons}. Pobierz wszystkie osoby");
+                Console.WriteLine($"{(int)GlobalConfig.MenuOption.GetPersonById}. Pobierz osobę po ID");
+                Console.WriteLine($"{(int)GlobalConfig.MenuOption.UpdatePerson}. Zaktualizuj osobę");
+                Console.WriteLine($"{(int)GlobalConfig.MenuOption.DeletePerson}. Usuń osobę");
+                Console.WriteLine($"{(int)GlobalConfig.MenuOption.CreateProject}. Utwórz projekt");
+                Console.WriteLine($"{(int)GlobalConfig.MenuOption.CreateCompany}. Utwórz firmę");
+                Console.WriteLine($"{(int)GlobalConfig.MenuOption.CreateAddress}. Utwórz adres");
+                Console.WriteLine($"{(int)GlobalConfig.MenuOption.CreatePersonWithAddressAndCompany}. Dodaj osobę z adresem i firmą");
+                Console.WriteLine($"{(int)GlobalConfig.MenuOption.AddPersonToProject}. Dodaj osobę do projektu");
+                Console.WriteLine($"{GlobalConfig.EscMenuValue} - zakończ program");
 
                 var input = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(input))
                     continue;
                 var trimmed = input.Trim();
-                if (trimmed.Equals("ESC", StringComparison.OrdinalIgnoreCase))
+                if (trimmed.Equals(GlobalConfig.EscMenuValue, StringComparison.OrdinalIgnoreCase))
                     break;
 
                 string option = trimmed;
@@ -71,7 +71,7 @@ namespace PersonManager
                 case "9": await CreateAddressAsync(); break;
                 case "10": await CreatePersonWithAddressAndCompanyAsync(); break;
                 case "11": await AddPersonToProjectAsync(); break;
-                default: Console.WriteLine("Nieznana opcja."); break;
+                default: Console.WriteLine(GlobalConfig.UnknownOptionError); break;
             }
         }
 
@@ -82,7 +82,7 @@ namespace PersonManager
             Console.WriteLine("Podaj wiek:");
             var ageStr = Console.ReadLine();
             int.TryParse(ageStr, out var age);
-            var result = await _mediator.Send(new CreatePersonCommand(name ?? "Brak imienia", age));
+            var result = await _mediator.Send(new CreatePersonCommand(name ?? GlobalConfig.DefaultPersonName, age));
             if (result.Success)
                 Console.WriteLine($"Utworzono osobę: {result.Name}, wiek: {result.Age}");
             else
@@ -115,77 +115,63 @@ namespace PersonManager
 
         private async Task GetPersonByIdAsync()
         {
-            Console.WriteLine("Podaj ID osoby:");
-            var idStr = Console.ReadLine();
-            if (int.TryParse(idStr, out var id))
-            {
-                var result = await _mediator.Send(new GetPersonByIdQuery(id));
-                if (result.Success)
-                    Console.WriteLine($"ID: {result.Id}, Imię: {result.Name}, Wiek: {result.Age}");
-                else
-                    Console.WriteLine($"Błąd: {result.ErrorMessage}");
-            }
-            else
+            var id = ReadIntInput("Podaj ID osoby:");
+            if (id == null)
             {
                 Console.WriteLine("Nieprawidłowe ID.");
+                return;
             }
+            var result = await _mediator.Send(new GetPersonByIdQuery(id.Value));
+            if (result.Success)
+                Console.WriteLine($"ID: {result.Id}, Imię: {result.Name}, Wiek: {result.Age}");
+            else
+                Console.WriteLine($"Błąd: {result.ErrorMessage}");
         }
 
         private async Task UpdatePersonAsync()
         {
-            Console.WriteLine("Podaj ID osoby do aktualizacji:");
-            var idStr = Console.ReadLine();
-            if (int.TryParse(idStr, out var id))
-            {
-                Console.WriteLine("Podaj nowe imię:");
-                var name = Console.ReadLine();
-                Console.WriteLine("Podaj nowy wiek:");
-                var ageStr = Console.ReadLine();
-                if (int.TryParse(ageStr, out var age))
-                {
-                    var result = await _mediator.Send(new UpdatePersonCommand { Id = id, Name = name ?? "Brak imienia", Age = age });
-                    if (result.Success)
-                        Console.WriteLine($"Zaktualizowano osobę: {result.Name}, wiek: {result.Age}");
-                    else
-                        Console.WriteLine($"Błąd: {result.ErrorMessage}");
-                }
-                else
-                {
-                    Console.WriteLine("Nieprawidłowy wiek.");
-                }
-            }
-            else
+            var id = ReadIntInput("Podaj ID osoby do aktualizacji:");
+            if (id == null)
             {
                 Console.WriteLine("Nieprawidłowe ID.");
+                return;
             }
+            Console.WriteLine("Podaj nowe imię:");
+            var name = Console.ReadLine();
+            var age = ReadIntInput("Podaj nowy wiek:");
+            if (age == null)
+            {
+                Console.WriteLine("Nieprawidłowy wiek.");
+                return;
+            }
+            var result = await _mediator.Send(new UpdatePersonCommand { Id = id.Value, Name = name ?? "Brak imienia", Age = age.Value });
+            if (result.Success)
+                Console.WriteLine($"Zaktualizowano osobę: {result.Name}, wiek: {result.Age}");
+            else
+                Console.WriteLine($"Błąd: {result.ErrorMessage}");
         }
 
         private async Task DeletePersonAsync()
         {
-            Console.WriteLine("Podaj ID osoby do usunięcia:");
-            var idStr = Console.ReadLine();
-            if (int.TryParse(idStr, out var id))
-            {
-                var result = await _mediator.Send(new DeletePersonCommand { Id = id });
-                if (result)
-                    Console.WriteLine("Osoba została usunięta.");
-                else
-                    Console.WriteLine("Nie znaleziono osoby lub błąd podczas usuwania.");
-            }
-            else
+            var id = ReadIntInput("Podaj ID osoby do usunięcia:");
+            if (id == null)
             {
                 Console.WriteLine("Nieprawidłowe ID.");
+                return;
             }
+            var result = await _mediator.Send(new DeletePersonCommand { Id = id.Value });
+            if (result)
+                Console.WriteLine("Osoba została usunięta.");
+            else
+                Console.WriteLine("Nie znaleziono osoby lub błąd podczas usuwania.");
         }
 
         private async Task CreateProjectAsync()
         {
             Console.WriteLine("Podaj tytuł projektu:");
             var projectTitle = Console.ReadLine();
-            Console.WriteLine("Podaj ID członków (oddzielone przecinkami):");
-            var memberIdsStr = Console.ReadLine();
-            var memberIds = memberIdsStr?.Split(',').Select(s => int.TryParse(s.Trim(), out var mid) ? mid : 0).Where(mid => mid > 0).ToList() ?? new List<int>();
-            var projectResult = await _mediator.Send(new CreateProjectCommand { Title = projectTitle ?? "Brak tytułu", MemberIds = memberIds });
+            var memberIds = ReadIntListInput("Podaj ID członków (oddzielone przecinkami):");
+            var projectResult = await _mediator.Send(new CreateProjectCommand { Title = projectTitle ?? GlobalConfig.DefaultProjectTitle, MemberIds = memberIds });
             Console.WriteLine(projectResult > 0 ? $"Utworzono projekt o ID: {projectResult}" : "Błąd podczas tworzenia projektu.");
         }
 
@@ -193,7 +179,7 @@ namespace PersonManager
         {
             Console.WriteLine("Podaj nazwę firmy:");
             var companyName = Console.ReadLine();
-            var companyResult = await _mediator.Send(new CreateCompanyCommand { Name = companyName ?? "Brak nazwy" });
+            var companyResult = await _mediator.Send(new CreateCompanyCommand { Name = companyName ?? GlobalConfig.DefaultCompanyName });
             Console.WriteLine(companyResult > 0 ? $"Utworzono firmę o ID: {companyResult}" : "Błąd podczas tworzenia firmy.");
         }
 
@@ -205,7 +191,7 @@ namespace PersonManager
             var city = Console.ReadLine();
             Console.WriteLine("Podaj kraj:");
             var country = Console.ReadLine();
-            var addressResult = await _mediator.Send(new CreateAddressCommand { Street = street ?? "Brak ulicy", City = city ?? "Brak miasta", Country = country ?? "Brak kraju" });
+            var addressResult = await _mediator.Send(new CreateAddressCommand { Street = street ?? GlobalConfig.DefaultStreet, City = city ?? GlobalConfig.DefaultCity, Country = country ?? GlobalConfig.DefaultCountry });
             Console.WriteLine(addressResult > 0 ? $"Utworzono adres o ID: {addressResult}" : "Błąd podczas tworzenia adresu.");
         }
 
@@ -213,29 +199,50 @@ namespace PersonManager
         {
             Console.WriteLine("Podaj imię:");
             var name = Console.ReadLine();
-            Console.WriteLine("Podaj wiek:");
-            var ageStr = Console.ReadLine();
-            int.TryParse(ageStr, out var age);
-            Console.WriteLine("Podaj ID adresu:");
-            var addressIdStr = Console.ReadLine();
-            int.TryParse(addressIdStr, out var addressId);
-            Console.WriteLine("Podaj ID firmy:");
-            var companyIdStr = Console.ReadLine();
-            int.TryParse(companyIdStr, out var companyId);
-            var personResult = await _mediator.Send(new CreatePersonCommand(name ?? "Brak imienia", age, addressId, companyId));
+            var age = ReadIntInput("Podaj wiek:");
+            var addressId = ReadIntInput("Podaj ID adresu:");
+            var companyId = ReadIntInput("Podaj ID firmy:");
+            if (age == null || addressId == null || companyId == null)
+            {
+                Console.WriteLine("Nieprawidłowe dane wejściowe.");
+                return;
+            }
+            var personResult = await _mediator.Send(new CreatePersonCommand(name ?? GlobalConfig.DefaultPersonName, age.Value, addressId.Value, companyId.Value));
             Console.WriteLine(personResult.Success ? $"Utworzono osobę: {personResult.Name}, wiek: {personResult.Age}, adres ID: {addressId}, firma ID: {companyId}" : $"Błąd: {personResult.ErrorMessage}");
         }
 
         private async Task AddPersonToProjectAsync()
         {
-            Console.WriteLine("Podaj ID osoby:");
-            var personIdStr = Console.ReadLine();
-            int.TryParse(personIdStr, out var personId);
-            Console.WriteLine("Podaj ID projektu:");
-            var projectIdStr = Console.ReadLine();
-            int.TryParse(projectIdStr, out var projectId);
-            var addToProjectResult = await _mediator.Send(new AddPersonToProjectCommand { PersonId = personId, ProjectId = projectId });
+            var personId = ReadIntInput("Podaj ID osoby:");
+            var projectId = ReadIntInput("Podaj ID projektu:");
+            if (personId == null || projectId == null)
+            {
+                Console.WriteLine("Nieprawidłowe dane wejściowe.");
+                return;
+            }
+            var addToProjectResult = await _mediator.Send(new AddPersonToProjectCommand { PersonId = personId.Value, ProjectId = projectId.Value });
             Console.WriteLine(addToProjectResult ? "Osoba dodana do projektu." : "Błąd podczas dodawania osoby do projektu.");
         }
+            // Helper methods for input validation
+            private int? ReadIntInput(string prompt)
+            {
+                Console.WriteLine(prompt);
+                var input = Console.ReadLine();
+                if (int.TryParse(input, out var value))
+                    return value;
+                return null;
+            }
+
+            private List<int> ReadIntListInput(string prompt)
+            {
+                Console.WriteLine(prompt);
+                var input = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(input))
+                    return new List<int>();
+                return input.Split(',')
+                    .Select(s => int.TryParse(s.Trim(), out var mid) ? mid : 0)
+                    .Where(mid => mid > 0)
+                    .ToList();
+            }
     }
 }

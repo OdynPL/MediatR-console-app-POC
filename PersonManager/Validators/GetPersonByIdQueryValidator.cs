@@ -8,7 +8,7 @@ namespace PersonManager.Validators
         public GetPersonByIdQueryValidator()
         {
             RuleFor(x => x.Id)
-                .GreaterThan(0).WithMessage("ID musi być dodatnie.");
+                .GreaterThan(0).WithMessage(GlobalConfig.IdPositiveError);
         }
     }
 }

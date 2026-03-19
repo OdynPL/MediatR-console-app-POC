@@ -8,8 +8,8 @@ namespace PersonManager.Validators
         public GetWeatherQueryValidator()
         {
             RuleFor(x => x.City)
-                .NotEmpty().WithMessage("Miasto nie może być puste.")
-                .MinimumLength(2).WithMessage("Miasto musi mieć co najmniej 2 znaki.");
+                .NotEmpty().WithMessage(GlobalConfig.CityEmptyError)
+                .MinimumLength(2).WithMessage(GlobalConfig.CityMinLengthError);
         }
     }
 }

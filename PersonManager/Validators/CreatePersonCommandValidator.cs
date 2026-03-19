@@ -8,10 +8,10 @@ namespace PersonManager.Validators
         public CreatePersonCommandValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Imię nie może być puste.")
-                .MinimumLength(2).WithMessage("Imię musi mieć co najmniej 2 znaki.");
+                .NotEmpty().WithMessage(GlobalConfig.PersonNameEmptyError)
+                .MinimumLength(2).WithMessage(GlobalConfig.PersonNameMinLengthError);
             RuleFor(x => x.Age)
-                .GreaterThan(0).WithMessage("Wiek musi być dodatni.");
+                .GreaterThan(0).WithMessage(GlobalConfig.PersonAgePositiveError);
         }
     }
 }
