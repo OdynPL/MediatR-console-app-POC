@@ -26,6 +26,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Bump patch version in csproj
         run: |
           $csproj = 'PersonManager/PersonManager.csproj'
@@ -37,16 +39,18 @@ jobs:
           $newVersion = "$($parts[0]).$($parts[1]).$($parts[2])"
           $newContent = $content -replace "<Version>$currentVersion</Version>", "<Version>$newVersion</Version>"
           Set-Content $csproj $newContent
+      - name: Configure Git
+        run: |
+          git config --global user.name "Adam Kawik"
+          git config --global user.email "akawik@gmail.com"
       - name: Commit and push increased version
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          PERSONAL_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          git config user.name "Adam Kawik"
-          git config user.email "akawik@gmail.com"
-          git remote set-url origin https://$env:GH_PAT@github.com/OdynPL/MediatR-console-app-POC.git
+          git remote set-url origin https://$env:PERSONAL_TOKEN@github.com/OdynPL/MediatR-console-app-POC.git
           git add PersonManager/PersonManager.csproj
           git commit -m "increase release version"
-          git push origin HEAD:main
+          git push origin main
       - uses: actions/checkout@v4
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
