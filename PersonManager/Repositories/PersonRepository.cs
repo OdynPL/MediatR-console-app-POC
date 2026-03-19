@@ -10,7 +10,6 @@ namespace PersonManager.Repositories
         private readonly AppDbContext _db;
         public PersonRepository(AppDbContext db)
         {
-            _db = db;
         _db = db;
         }
         public async Task<RepositoryResult<Person>> AddAsync(Person person, CancellationToken cancellationToken = default)
