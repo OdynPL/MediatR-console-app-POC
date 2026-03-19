@@ -31,12 +31,6 @@ jobs:
         with:
           name: PersonManagerInstaller
           path: PersonManagerInstaller.msi
-      - name: Static code analysis (SonarScanner)
-        run: |
-          dotnet tool install --global dotnet-sonarscanner
-          dotnet sonarscanner begin /k:"PersonManager" /d:sonar.host.url="https://sonarcloud.io" || echo "SonarCloud setup skipped (no token)"
-          dotnet build PersonManager/PersonManager.csproj
-          dotnet sonarscanner end || echo "SonarCloud analysis skipped"
 
   test-main:
     runs-on: windows-latest
