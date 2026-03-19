@@ -18,8 +18,23 @@ namespace PersonManager
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite("Data Source=app.db"));
             services.AddScoped<IPersonRepository, PersonRepository>();
-            services.AddScoped<UnitOfWork.IUnitOfWork, UnitOfWork.UnitOfWork>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+
+            services.AddScoped<UnitOfWork.IUnitOfWork>(provider =>
+                new UnitOfWork.UnitOfWork(
+                    provider.GetRequiredService<AppDbContext>(),
+                    provider.GetRequiredService<IPersonRepository>(),
+                    provider.GetRequiredService<IAddressRepository>(),
+                    provider.GetRequiredService<ICompanyRepository>(),
+                    provider.GetRequiredService<IProjectRepository>()
+                ));
+
             services.AddScoped<IPersonService, PersonService>();
+            services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IProjectService, ProjectService>();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreatePersonCommandHandler).Assembly));
             services.AddScoped<IWeatherService, WeatherService>();
             services.AddAutoMapper(typeof(MappingProfile));
