@@ -12,6 +12,8 @@ public class ProjectRepository : IProjectRepository
     }
     public async Task<RepositoryResult<Project>> AddAsync(Project project, CancellationToken cancellationToken = default)
     {
+        if (project == null)
+            return RepositoryResult<Project>.Fail("Project is null");
         try
         {
             await _db.Projects.AddAsync(project, cancellationToken);
@@ -50,6 +52,8 @@ public class ProjectRepository : IProjectRepository
     }
     public async Task<RepositoryResult<Project>> UpdateAsync(Project project, CancellationToken cancellationToken = default)
     {
+        if (project == null)
+            return RepositoryResult<Project>.Fail("Project is null");
         try
         {
             _db.Projects.Update(project);

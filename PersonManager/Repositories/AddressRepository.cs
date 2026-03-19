@@ -15,6 +15,8 @@ namespace PersonManager.Repositories
         }
         public async Task<RepositoryResult<Address>> AddAsync(Address address, CancellationToken cancellationToken = default)
         {
+            if (address == null)
+                return RepositoryResult<Address>.Fail("Address is null");
             try
             {
                 await _db.Addresses.AddAsync(address, cancellationToken);
@@ -53,6 +55,8 @@ namespace PersonManager.Repositories
         }
         public async Task<RepositoryResult<Address>> UpdateAsync(Address address, CancellationToken cancellationToken = default)
         {
+            if (address == null)
+                return RepositoryResult<Address>.Fail("Address is null");
             try
             {
                 _db.Addresses.Update(address);

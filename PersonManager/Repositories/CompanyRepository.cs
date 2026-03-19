@@ -15,6 +15,8 @@ namespace PersonManager.Repositories
         }
         public async Task<RepositoryResult<Company>> AddAsync(Company company, CancellationToken cancellationToken = default)
         {
+            if (company == null)
+                return RepositoryResult<Company>.Fail("Company is null");
             try
             {
                 await _db.Companies.AddAsync(company, cancellationToken);
@@ -53,6 +55,8 @@ namespace PersonManager.Repositories
         }
         public async Task<RepositoryResult<Company>> UpdateAsync(Company company, CancellationToken cancellationToken = default)
         {
+            if (company == null)
+                return RepositoryResult<Company>.Fail("Company is null");
             try
             {
                 _db.Companies.Update(company);

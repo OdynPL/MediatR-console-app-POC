@@ -7,21 +7,24 @@ namespace PersonManager.Tests.Repositories
 {
     public class AddressRepositoryTests
     {
-        private AppDbContext GetDbContext()
+
+        private readonly AppDbContext _db;
+        private readonly AddressRepository _repo;
+
+        public AddressRepositoryTests()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: "AddressRepoTestDb")
+                .UseInMemoryDatabase(databaseName: $"AddressRepoTestDb_{Guid.NewGuid()}")
                 .Options;
-            return new AppDbContext(options);
+            _db = new AppDbContext(options);
+            _repo = new AddressRepository(_db);
         }
 
         [Fact]
         public async Task AddAsync_AddsAddress()
         {
-            var db = GetDbContext();
-            var repo = new AddressRepository(db);
             var address = new Address { Street = "Testowa 1" };
-            var result = await repo.AddAsync(address, CancellationToken.None);
+            var result = await _repo.AddAsync(address, CancellationToken.None);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
             Assert.Equal("Testowa 1", result.Data.Street);
@@ -30,12 +33,10 @@ namespace PersonManager.Tests.Repositories
         [Fact]
         public async Task GetByIdAsync_ReturnsAddress()
         {
-            var db = GetDbContext();
-            var repo = new AddressRepository(db);
             var address = new Address { Street = "FindMe 2" };
-            await repo.AddAsync(address);
-            await db.SaveChangesAsync();
-            var result = await repo.GetByIdAsync(address.Id);
+            await _repo.AddAsync(address);
+            await _db.SaveChangesAsync();
+            var result = await _repo.GetByIdAsync(address.Id);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
             Assert.Equal("FindMe 2", result.Data.Street);
@@ -44,13 +45,11 @@ namespace PersonManager.Tests.Repositories
         [Fact]
         public async Task GetAllAsync_ReturnsAll()
         {
-            var db = GetDbContext();
-            var repo = new AddressRepository(db);
-            await repo.AddAsync(new Address { Street = "A" });
-            await db.SaveChangesAsync();
-            await repo.AddAsync(new Address { Street = "B" });
-            await db.SaveChangesAsync();
-            var result = await repo.GetAllAsync();
+            await _repo.AddAsync(new Address { Street = "A" });
+            await _db.SaveChangesAsync();
+            await _repo.AddAsync(new Address { Street = "B" });
+            await _db.SaveChangesAsync();
+            var result = await _repo.GetAllAsync();
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
             Assert.Equal(2, result.Data.Count);
@@ -59,13 +58,11 @@ namespace PersonManager.Tests.Repositories
         [Fact]
         public async Task UpdateAsync_UpdatesAddress()
         {
-            var db = GetDbContext();
-            var repo = new AddressRepository(db);
             var address = new Address { Street = "Old" };
-            await repo.AddAsync(address);
-            await db.SaveChangesAsync();
+            await _repo.AddAsync(address);
+            await _db.SaveChangesAsync();
             address.Street = "New";
-            var result = await repo.UpdateAsync(address);
+            var result = await _repo.UpdateAsync(address);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
             Assert.Equal("New", result.Data.Street);
@@ -74,20 +71,16 @@ namespace PersonManager.Tests.Repositories
         [Fact]
         public async Task DeleteAsync_DeletesAddress()
         {
-            var db = GetDbContext();
-            var repo = new AddressRepository(db);
             var address = new Address { Street = "Del" };
-            await repo.AddAsync(address);
-            var result = await repo.DeleteAsync(address.Id);
+            await _repo.AddAsync(address);
+            var result = await _repo.DeleteAsync(address.Id);
             Assert.True(result.Success);
         }
 
         [Fact]
         public void GetQueryable_ReturnsQueryable()
         {
-            var db = GetDbContext();
-            var repo = new AddressRepository(db);
-            var queryable = repo.GetQueryable();
+            var queryable = _repo.GetQueryable();
             Assert.NotNull(queryable);
             Assert.IsAssignableFrom<IQueryable<Address>>(queryable);
         }

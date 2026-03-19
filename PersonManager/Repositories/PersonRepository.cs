@@ -15,6 +15,8 @@ namespace PersonManager.Repositories
         }
         public async Task<RepositoryResult<Person>> AddAsync(Person person, CancellationToken cancellationToken = default)
         {
+            if (person == null)
+                return RepositoryResult<Person>.Fail("Person is null");
             try
             {
                 await _db.People.AddAsync(person, cancellationToken);
@@ -56,6 +58,8 @@ namespace PersonManager.Repositories
 
         public async Task<RepositoryResult<Person>> UpdateAsync(Person person, CancellationToken cancellationToken = default)
         {
+            if (person == null)
+                return RepositoryResult<Person>.Fail("Person is null");
             try
             {
                 person.RowVersion++;
