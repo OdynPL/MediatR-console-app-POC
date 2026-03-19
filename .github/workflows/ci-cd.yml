@@ -41,8 +41,8 @@ jobs:
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "Adam Kawik"
+          git config user.email "akawik@gmail.com"
           git remote set-url origin https://$env:GH_PAT@github.com/OdynPL/MediatR-console-app-POC.git
           git add PersonManager/PersonManager.csproj
           git commit -m "increase release version"
