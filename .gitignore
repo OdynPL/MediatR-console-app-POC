@@ -1,0 +1,64 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Database
+app.db
+app.db-shm
+app.db-wal
+
+# EF Migrations
+Migrations/
+
+# Test results
+TestResults/
+
+# Others
+debug/
+release/
+
+# Rider
+.idea/
+
+# NuGet
+*.nupkg
+packages/
+
+# Build
+*.dll
+*.exe
+*.pdb
+*.cache
+*.msi
+*.config
+*.zip
+*.tar.gz
+*.7z
+*.bak
+*.swp
+*.tmp
+*.vspscc
+*.vssscc
+*.db
+*.mdb
+*.ldf
+*.ndf
+*.sqlite
+*.sqlite3
+*.db3
+*.sdf
+*.sln.ide
