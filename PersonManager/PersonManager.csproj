@@ -11,7 +11,7 @@
     <Description>PersonManager Console Application - MediatR, EF Core, FluentValidation</Description>
     <PackageId>PersonManager</PackageId>
     <NoWarn>NU1903</NoWarn>
-    <Version>1.0.11</Version>
+    <Version>1.0.12</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
