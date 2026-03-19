@@ -7,12 +7,27 @@ namespace PersonManager.Domain
         public int Age { get; set; }
         public int RowVersion { get; set; } // Concurrency token
 
-        public Person() { }
+        // One-to-Many: Person -> Address
+        public int? AddressId { get; set; }
+        public Address? Address { get; set; }
+
+        // Many-to-One: Person -> Company
+        public int? CompanyId { get; set; }
+        public Company? Company { get; set; }
+
+        // Many-to-Many: Person <-> Project
+        public ICollection<Project> Projects { get; set; }
+
+        public Person()
+        {
+            Projects = new List<Project>();
+        }
 
         public Person(string name, int age)
         {
             Name = name;
             Age = age;
+            Projects = new List<Project>();
         }
     }
 }
