@@ -35,7 +35,6 @@ jobs:
         run: |
           $version = Select-String -Path PersonManager/PersonManager.csproj -Pattern '<Version>(.*)</Version>' | ForEach-Object { $_.Matches[0].Groups[1].Value }
           echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
-          echo "::set-output name=version::$version"
       - name: Restore dependencies
         run: dotnet restore PersonManager/PersonManager.csproj
       - name: Build
