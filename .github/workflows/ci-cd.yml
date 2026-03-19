@@ -49,7 +49,7 @@ jobs:
           path: PersonManagerInstaller.msi
   test:
     runs-on: windows-latest
-    needs: build
+    needs: format
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET

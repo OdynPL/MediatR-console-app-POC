@@ -5,6 +5,6 @@ namespace PersonManager.Domain
         public int Id { get; set; }
         public string Title { get; set; }
         // Relacja: Many-to-Many (Person <-> Project)
-        public ICollection<Person> Members { get; set; }
+        public ICollection<Person> Members { get; set; } = new List<Person>();
     }
 }
