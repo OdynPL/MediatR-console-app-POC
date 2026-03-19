@@ -1,0 +1,48 @@
+using FluentValidation.TestHelper;
+using PersonManager.Commands;
+using PersonManager.Validators;
+using Xunit;
+
+namespace PersonManager.Tests.Validators
+{
+    public class UpdatePersonCommandValidatorTests
+    {
+        private readonly UpdatePersonCommandValidator _validator = new();
+
+        [Fact]
+        public void Should_Have_Error_When_Id_Not_Positive()
+        {
+            var model = new UpdatePersonCommand { Id = 0, Name = "Jan", Age = 30 };
+            var result = _validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(x => x.Id);
+        }
+
+        [Fact]
+        public void Should_Have_Error_When_Name_Empty_Or_TooShort()
+        {
+            var model1 = new UpdatePersonCommand { Id = 1, Name = "", Age = 20 };
+            var result1 = _validator.TestValidate(model1);
+            result1.ShouldHaveValidationErrorFor(x => x.Name);
+
+            var model2 = new UpdatePersonCommand { Id = 1, Name = "A", Age = 20 };
+            var result2 = _validator.TestValidate(model2);
+            result2.ShouldHaveValidationErrorFor(x => x.Name);
+        }
+
+        [Fact]
+        public void Should_Have_Error_When_Age_Not_Positive()
+        {
+            var model = new UpdatePersonCommand { Id = 1, Name = "Jan", Age = 0 };
+            var result = _validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(x => x.Age);
+        }
+
+        [Fact]
+        public void Should_Not_Have_Error_For_Valid_Model()
+        {
+            var model = new UpdatePersonCommand { Id = 1, Name = "Jan", Age = 30 };
+            var result = _validator.TestValidate(model);
+            result.ShouldNotHaveAnyValidationErrors();
+        }
+    }
+}
