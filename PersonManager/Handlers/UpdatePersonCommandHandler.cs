@@ -1,10 +1,10 @@
 using MediatR;
-using MediatRApp.Commands;
-using MediatRApp.Repositories;
-using MediatRApp.DTO;
+using PersonManager.Commands;
+using PersonManager.Repositories;
+using PersonManager.DTO;
 using AutoMapper;
 
-namespace MediatRApp.Handlers
+namespace PersonManager.Handlers
 {
     public class UpdatePersonCommandHandler : IRequestHandler<UpdatePersonCommand, PersonResponseDto>
     {

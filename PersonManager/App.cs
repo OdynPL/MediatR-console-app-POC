@@ -1,12 +1,13 @@
 using MediatR;
-using MediatRApp.Data;
-using MediatRApp.Handlers;
-using MediatRApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
+using PersonManager.Repositories;
+using PersonManager.Data;
+using PersonManager.Services;
+using PersonManager.Handlers;
 
-namespace MediatRApp
+namespace PersonManager
 {
     public static class App
     {
@@ -16,9 +17,9 @@ namespace MediatRApp
             services.AddLogging();
                 services.AddDbContext<AppDbContext>(options =>
                     options.UseSqlite("Data Source=app.db"));
-                services.AddScoped<Repositories.IPersonRepository, Repositories.PersonRepository>();
-                services.AddScoped<MediatRApp.UnitOfWork.IUnitOfWork, MediatRApp.UnitOfWork.UnitOfWork>();
-                services.AddScoped<Services.IPersonService, Services.PersonService>();
+                services.AddScoped<IPersonRepository, PersonRepository>();
+                services.AddScoped<PersonManager.UnitOfWork.IUnitOfWork, PersonManager.UnitOfWork.UnitOfWork>();
+                services.AddScoped<IPersonService, PersonService>();
                 services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreatePersonCommandHandler).Assembly));
                 services.AddScoped<IWeatherService, WeatherService>();
                 services.AddAutoMapper(typeof(MappingProfile));

@@ -1,7 +1,7 @@
 using FluentValidation;
 using MediatR;
 
-namespace MediatRApp.Behaviors
+namespace PersonManager.Behaviors
 {
     public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>

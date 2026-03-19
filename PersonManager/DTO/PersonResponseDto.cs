@@ -1,4 +1,4 @@
-namespace MediatRApp.DTO
+namespace PersonManager.DTO
 {
     public class PersonResponseDto
     {

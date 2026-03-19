@@ -1,10 +1,10 @@
 ﻿using MediatR;
-using MediatRApp.Commands;
+using PersonManager.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
-using MediatRApp.Queries;
+using PersonManager.Queries;
 
-namespace MediatRApp
+namespace PersonManager
 {
 	public class Program
 	{

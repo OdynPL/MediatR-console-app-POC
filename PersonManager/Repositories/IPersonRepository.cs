@@ -1,8 +1,8 @@
 
-using MediatRApp.Domain;
-using MediatRApp.DTO;
+using PersonManager.Domain;
+using PersonManager.DTO;
 
-namespace MediatRApp.Repositories
+namespace PersonManager.Repositories
 {
     public interface IPersonRepository
     {

@@ -1,8 +1,8 @@
 using MediatR;
-using MediatRApp.DTO;
+using PersonManager.DTO;
 using System.Collections.Generic;
 
-namespace MediatRApp.Queries
+namespace PersonManager.Queries
 {
     public class GetAllPersonsQuery : IRequest<List<PersonResponseDto>>
     {

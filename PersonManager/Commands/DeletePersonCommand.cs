@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace MediatRApp.Commands
+namespace PersonManager.Commands
 {
     public class DeletePersonCommand : IRequest<bool>
     {

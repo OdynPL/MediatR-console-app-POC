@@ -1,6 +1,6 @@
-using MediatRApp.Domain;
+using PersonManager.Domain;
 
-namespace MediatRApp.Services
+namespace PersonManager.Services
 {
     public interface IPersonService
     {
@@ -9,6 +9,6 @@ namespace MediatRApp.Services
         Task<DTO.RepositoryResult<List<Person>>> GetAllPersonsAsync(CancellationToken cancellationToken = default);
         Task<DTO.RepositoryResult<Person>> UpdatePersonAsync(Person person, CancellationToken cancellationToken = default);
         Task<DTO.RepositoryResult<bool>> DeletePersonAsync(int id, CancellationToken cancellationToken = default);
-        IQueryable<MediatRApp.Domain.Person> GetQueryablePersons();
+        IQueryable<PersonManager.Domain.Person> GetQueryablePersons();
     }
 }

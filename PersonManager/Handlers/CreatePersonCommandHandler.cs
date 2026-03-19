@@ -1,10 +1,10 @@
 using AutoMapper;
 using MediatR;
-using MediatRApp.Commands;
-using MediatRApp.Domain;
-using MediatRApp.DTO;
-using MediatRApp.Services;
-namespace MediatRApp.Handlers
+using PersonManager.Commands;
+using PersonManager.Domain;
+using PersonManager.DTO;
+using PersonManager.Services;
+namespace PersonManager.Handlers
 {
     public class CreatePersonCommandHandler : IRequestHandler<CreatePersonCommand, PersonResponseDto>
     {

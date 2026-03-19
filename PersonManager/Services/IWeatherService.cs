@@ -1,4 +1,4 @@
-namespace MediatRApp.Services
+namespace PersonManager.Services
 {
     public interface IWeatherService
     {

@@ -1,8 +1,8 @@
 using MediatR;
-using MediatRApp.Commands;
-using MediatRApp.Repositories;
+using PersonManager.Commands;
+using PersonManager.Repositories;
 
-namespace MediatRApp.Handlers
+namespace PersonManager.Handlers
 {
     public class DeletePersonCommandHandler : IRequestHandler<DeletePersonCommand, bool>
     {

@@ -1,9 +1,9 @@
-using MediatRApp.Data;
-using MediatRApp.Domain;
-using MediatRApp.DTO;
+using PersonManager.Data;
+using PersonManager.Domain;
+using PersonManager.DTO;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediatRApp.Repositories
+namespace PersonManager.Repositories
 {
     public class PersonRepository : IPersonRepository
     {

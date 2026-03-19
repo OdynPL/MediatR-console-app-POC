@@ -1,8 +1,8 @@
-using MediatRApp.Data;
-using MediatRApp.Repositories;
+using PersonManager.Data;
+using PersonManager.Repositories;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace MediatRApp.UnitOfWork
+namespace PersonManager.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {

@@ -1,8 +1,8 @@
 using MediatR;
-using MediatRApp.Queries;
-using MediatRApp.Services;
-using MediatRApp.DTO;
-namespace MediatRApp.Handlers
+using PersonManager.Queries;
+using PersonManager.Services;
+using PersonManager.DTO;
+namespace PersonManager.Handlers
 {
     public class GetWeatherQueryHandler : IRequestHandler<GetWeatherQuery, WeatherResponseDto>
     {

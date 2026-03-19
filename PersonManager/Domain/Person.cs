@@ -1,4 +1,4 @@
-namespace MediatRApp.Domain
+namespace PersonManager.Domain
 {
     public class Person
     {

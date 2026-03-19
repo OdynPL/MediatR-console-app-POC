@@ -1,7 +1,7 @@
 using FluentValidation;
-using MediatRApp.Queries;
+using PersonManager.Queries;
 
-namespace MediatRApp.Validators
+namespace PersonManager.Validators
 {
     public class GetPersonByIdQueryValidator : AbstractValidator<GetPersonByIdQuery>
     {

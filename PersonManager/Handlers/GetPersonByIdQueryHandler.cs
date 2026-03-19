@@ -1,10 +1,10 @@
 using MediatR;
-using MediatRApp.Queries;
-using MediatRApp.Repositories;
-using MediatRApp.DTO;
+using PersonManager.Queries;
+using PersonManager.Repositories;
+using PersonManager.DTO;
 using AutoMapper;
 
-namespace MediatRApp.Handlers
+namespace PersonManager.Handlers
 {
     public class GetPersonByIdQueryHandler : IRequestHandler<GetPersonByIdQuery, PersonResponseDto>
     {

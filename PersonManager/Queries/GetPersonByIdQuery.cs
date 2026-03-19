@@ -1,7 +1,7 @@
 using MediatR;
-using MediatRApp.DTO;
+using PersonManager.DTO;
 
-namespace MediatRApp.Queries
+namespace PersonManager.Queries
 {
     public class GetPersonByIdQuery : IRequest<PersonResponseDto>
     {

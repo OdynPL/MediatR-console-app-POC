@@ -1,7 +1,7 @@
 using MediatR;
-using MediatRApp.DTO;
+using PersonManager.DTO;
 
-namespace MediatRApp.Commands
+namespace PersonManager.Commands
 {
     public class UpdatePersonCommand : IRequest<PersonResponseDto>
     {

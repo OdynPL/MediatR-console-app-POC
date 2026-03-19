@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="PersonManager/PersonManager.csproj" />
+  <Project Path="PersonManager.Tests/PersonManager.Tests.csproj" />
 </Solution>

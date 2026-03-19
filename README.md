@@ -27,8 +27,8 @@ This repository contains a sample .NET console application demonstrating the use
 
 ## How to Run
 1. Build the project: `dotnet build`
-2. Apply migrations: `dotnet ef database update --project MediatRApp/MediatRApp.csproj`
-3. Run: `dotnet run --project MediatRApp/MediatRApp.csproj`
+2. Apply migrations: `dotnet ef database update --project PersonManager/PersonManager.csproj`
+3. Run: `dotnet run --project PersonManager/PersonManager.csproj`
 
 ## Notes
 - The database file (`app.db`) and its auxiliary files are excluded from version control via `.gitignore`.

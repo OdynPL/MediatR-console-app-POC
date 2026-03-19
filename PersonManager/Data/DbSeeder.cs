@@ -1,7 +1,7 @@
 
-using MediatRApp.Domain;
+using PersonManager.Domain;
 
-namespace MediatRApp.Data
+namespace PersonManager.Data
 {
     public static class DbSeeder
     {

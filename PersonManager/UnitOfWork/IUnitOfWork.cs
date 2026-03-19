@@ -1,6 +1,6 @@
-using MediatRApp.Repositories;
+using PersonManager.Repositories;
 
-namespace MediatRApp.UnitOfWork
+namespace PersonManager.UnitOfWork
 {
     public interface IUnitOfWork
     {

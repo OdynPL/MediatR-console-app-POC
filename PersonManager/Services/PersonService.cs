@@ -1,7 +1,7 @@
-using MediatRApp.Domain;
-using MediatRApp.UnitOfWork;
+using PersonManager.Domain;
+using PersonManager.UnitOfWork;
 
-namespace MediatRApp.Services
+namespace PersonManager.Services
 {
     public class PersonService : IPersonService
     {

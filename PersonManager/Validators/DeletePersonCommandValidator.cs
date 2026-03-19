@@ -1,7 +1,7 @@
 using FluentValidation;
-using MediatRApp.Commands;
+using PersonManager.Commands;
 
-namespace MediatRApp.Validators
+namespace PersonManager.Validators
 {
     public class DeletePersonCommandValidator : AbstractValidator<DeletePersonCommand>
     {

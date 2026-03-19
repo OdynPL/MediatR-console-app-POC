@@ -1,10 +1,10 @@
 using AutoMapper;
-using MediatRApp.Domain;
-using MediatRApp.DTO;
+using PersonManager.Domain;
+using PersonManager.DTO;
 
-namespace MediatRApp
+namespace PersonManager
 {
-    using MediatRApp.Commands;
+    using PersonManager.Commands;
     public class MappingProfile : Profile
     {
         public MappingProfile()
