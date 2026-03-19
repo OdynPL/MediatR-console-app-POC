@@ -66,18 +66,9 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Test (unit tests)
         run: dotnet test PersonManager.Tests/PersonManager.Tests.csproj --no-build --verbosity normal
-  static-analysis:
-    runs-on: windows-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
   security:
     runs-on: windows-latest
-    needs: static-analysis
+    needs: test-unit
     steps:
       - uses: actions/checkout@v4
       - name: Security scan (Snyk)
