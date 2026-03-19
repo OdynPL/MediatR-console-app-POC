@@ -1,5 +1,3 @@
 <Solution>
-  <Project Path="MediatRApp/MediatRApp.csproj" />
-<Solution>
   <Project Path="PersonManager/PersonManager.csproj" />
 </Solution>
