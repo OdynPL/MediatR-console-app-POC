@@ -2,6 +2,8 @@ using PersonManager.Domain;
 using PersonManager.Data;
 using Microsoft.EntityFrameworkCore;
 using PersonManager.Repositories;
+using PersonManager.Specifications;
+using System.Linq.Expressions;
 
 namespace PersonManager.Tests.Repositories
 {
@@ -90,6 +92,39 @@ namespace PersonManager.Tests.Repositories
             var queryable = repo.GetQueryable();
             Assert.NotNull(queryable);
             Assert.IsAssignableFrom<IQueryable<Company>>(queryable);
+        }
+
+        [Fact]
+        public async Task GetBySpecificationAsync_ReturnsFilteredCompanies_ByName()
+        {
+            var db = GetDbContext();
+            var repo = new CompanyRepository(db);
+            var companies = new List<Company>
+            {
+                new Company { Name = "A", Employees = new List<Person>() },
+                new Company { Name = "B", Employees = new List<Person>() },
+                new Company { Name = "C", Employees = new List<Person>() }
+            };
+            foreach (var c in companies)
+                await repo.AddAsync(c);
+            await db.SaveChangesAsync();
+
+            // Specyfikacja po nazwie firmy (możesz ją przenieść do osobnego pliku)
+            var spec = new SpecificationByName("B");
+            var result = await repo.GetBySpecificationAsync(spec);
+            Assert.True(result.Success);
+            Assert.NotNull(result.Data);
+            Assert.Single(result.Data);
+            Assert.Equal("B", result.Data[0].Name);
+        }
+    }
+
+    public class SpecificationByName : ISpecification<Company>
+    {
+        public Expression<Func<Company, bool>> Criteria { get; }
+        public SpecificationByName(string name)
+        {
+            Criteria = c => c.Name == name;
         }
     }
 }
