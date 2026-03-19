@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*" Name="PersonManager" Language="1033" Version="1.0.0" Manufacturer="YourCompany" UpgradeCode="12345678-1234-1234-1234-123456789abc">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-    <Media Id="1" />
+    <Media Id="1" Cabinet="PersonManager.cab" />
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLFOLDER" Name="PersonManager">
