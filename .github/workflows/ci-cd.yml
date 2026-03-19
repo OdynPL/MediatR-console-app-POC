@@ -36,12 +36,6 @@ jobs:
           $version = Select-String -Path PersonManager/PersonManager.csproj -Pattern '<Version>(.*)</Version>' | ForEach-Object { $_.Matches[0].Groups[1].Value }
           echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
           echo "::set-output name=version::$version"
-      - name: Create git tag
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git tag v$env:VERSION
-          git push origin v$env:VERSION
       - name: Restore dependencies
         run: dotnet restore PersonManager/PersonManager.csproj
       - name: Build
