@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
-  <Package Name="MediatRAppInstaller" Manufacturer="YourCompany" Version="1.0.0" Language="1033" Platform="x64" />
-  <Directory Id="TARGETDIR" Name="SourceDir">
-    <Directory Id="ProgramFilesFolder">
-      <Directory Id="INSTALLFOLDER" Name="MediatRApp">
-        <Component Id="MediatRAppExe" Guid="*">
-          <File Source="publish\MediatRApp.exe" />
-        </Component>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="PersonManager" Language="1033" Version="1.0.0" Manufacturer="YourCompany" UpgradeCode="*">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="PersonManager">
+          <Component Id="PersonManagerExe" Guid="*">
+            <File Id="PersonManagerExe" Source="publish\PersonManager.exe" />
+          </Component>
+        </Directory>
       </Directory>
     </Directory>
-  </Directory>
-  <Feature Id="MainFeature" Title="MediatRApp" Description="MediatR Console App" Level="1">
-    <ComponentRef Id="MediatRAppExe" />
-  </Feature>
+    <Feature Id="MainFeature" Title="PersonManager" Description="PersonManager Console App" Level="1">
+      <ComponentRef Id="PersonManagerExe" />
+    </Feature>
+  </Product>
 </Wix>
