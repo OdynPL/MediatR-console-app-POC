@@ -11,5 +11,6 @@ namespace PersonManager.Services
         Task<DTO.RepositoryResult<Address>> UpdateAddressAsync(Address address, CancellationToken cancellationToken = default);
         Task<DTO.RepositoryResult<bool>> DeleteAddressAsync(int id, CancellationToken cancellationToken = default);
         IQueryable<Address> GetQueryableAddresses();
+        Task<int> CreateAddressAsync(string street, string city, string country, CancellationToken cancellationToken = default);
     }
 }

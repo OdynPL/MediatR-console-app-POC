@@ -11,5 +11,6 @@ namespace PersonManager.Services
         Task<RepositoryResult<Company>> UpdateCompanyAsync(Company company, CancellationToken cancellationToken = default);
         Task<RepositoryResult<bool>> DeleteCompanyAsync(int id, CancellationToken cancellationToken = default);
         IQueryable<Company> GetQueryableCompanies();
+        Task<int> CreateCompanyAsync(string name, CancellationToken cancellationToken = default);
     }
 }

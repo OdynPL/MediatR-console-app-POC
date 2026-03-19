@@ -1,4 +1,5 @@
 using PersonManager.Domain;
+using PersonManager.DTO;
 using PersonManager.UnitOfWork;
 
 namespace PersonManager.Services
@@ -10,7 +11,7 @@ namespace PersonManager.Services
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<DTO.RepositoryResult<Person>> AddPersonAsync(Person person, CancellationToken cancellationToken = default)
+        public async Task<RepositoryResult<Person>> AddPersonAsync(Person person, CancellationToken cancellationToken = default)
         {
             var result = await _unitOfWork.PersonRepository.AddAsync(person, cancellationToken);
             if (!result.Success)
@@ -19,17 +20,17 @@ namespace PersonManager.Services
             return result;
         }
 
-        public async Task<DTO.RepositoryResult<Person>> GetPersonByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<RepositoryResult<Person>> GetPersonByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _unitOfWork.PersonRepository.GetByIdAsync(id, cancellationToken);
         }
 
-        public async Task<DTO.RepositoryResult<List<Person>>> GetAllPersonsAsync(CancellationToken cancellationToken = default)
+        public async Task<RepositoryResult<List<Person>>> GetAllPersonsAsync(CancellationToken cancellationToken = default)
         {
             return await _unitOfWork.PersonRepository.GetAllAsync(cancellationToken);
         }
 
-        public async Task<DTO.RepositoryResult<Person>> UpdatePersonAsync(Person person, CancellationToken cancellationToken = default)
+        public async Task<RepositoryResult<Person>> UpdatePersonAsync(Person person, CancellationToken cancellationToken = default)
         {
             var result = await _unitOfWork.PersonRepository.UpdateAsync(person, cancellationToken);
             if (!result.Success)
@@ -38,7 +39,7 @@ namespace PersonManager.Services
             return result;
         }
 
-        public async Task<DTO.RepositoryResult<bool>> DeletePersonAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<RepositoryResult<bool>> DeletePersonAsync(int id, CancellationToken cancellationToken = default)
         {
             var result = await _unitOfWork.PersonRepository.DeleteAsync(id, cancellationToken);
             if (!result.Success)

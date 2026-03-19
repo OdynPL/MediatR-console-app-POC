@@ -47,5 +47,15 @@ namespace PersonManager.Services
         {
             return _unitOfWork.AddressRepository.GetQueryable();
         }
+
+        public async Task<int> CreateAddressAsync(string street, string city, string country, CancellationToken cancellationToken = default)
+        {
+            var address = new Address { Street = street, City = city, Country = country };
+            var result = await _unitOfWork.AddressRepository.AddAsync(address, cancellationToken);
+            if (!result.Success || result.Data == null)
+                return 0;
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            return result.Data.Id;
+        }
     }
 }
