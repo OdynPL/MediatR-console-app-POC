@@ -1,6 +1,7 @@
 using PersonManager.Data;
 using PersonManager.Domain;
 using PersonManager.DTO;
+using Microsoft.EntityFrameworkCore;
 using PersonManager.Repositories;
 public class CompanyRepository : ICompanyRepository
 {
@@ -39,7 +40,7 @@ public class CompanyRepository : ICompanyRepository
     {
         try
         {
-            var companies = await Task.Run(() => _db.Companies.ToList(), cancellationToken);
+            var companies = await _db.Companies.ToListAsync(cancellationToken);
             return RepositoryResult<List<Company>>.Ok(companies);
         }
         catch (Exception ex)

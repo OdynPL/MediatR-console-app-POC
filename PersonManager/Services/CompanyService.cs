@@ -50,7 +50,7 @@ namespace PersonManager.Services
 
         public async Task<int> CreateCompanyAsync(string name, CancellationToken cancellationToken = default)
         {
-            var company = new Company { Name = name };
+            var company = new Company { Name = name, Employees = new List<Person>() };
             var result = await _unitOfWork.CompanyRepository.AddAsync(company, cancellationToken);
             if (!result.Success || result.Data == null)
                 return 0;

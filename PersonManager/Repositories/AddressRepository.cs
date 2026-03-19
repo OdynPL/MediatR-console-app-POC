@@ -1,6 +1,7 @@
 using PersonManager.Data;
 using PersonManager.Domain;
 using PersonManager.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace PersonManager.Repositories
 {
@@ -41,7 +42,7 @@ namespace PersonManager.Repositories
         {
             try
             {
-                var addresses = await Task.Run(() => _db.Addresses.ToList(), cancellationToken);
+                var addresses = await _db.Addresses.AsQueryable().ToListAsync(cancellationToken);
                 return RepositoryResult<List<Address>>.Ok(addresses);
             }
             catch (Exception ex)

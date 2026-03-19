@@ -1,6 +1,7 @@
 using PersonManager.Data;
 using PersonManager.Domain;
 using PersonManager.DTO;
+using Microsoft.EntityFrameworkCore;
 public class ProjectRepository : IProjectRepository
 {
     private readonly AppDbContext _db;
@@ -38,7 +39,7 @@ public class ProjectRepository : IProjectRepository
     {
         try
         {
-            var projects = await Task.Run(() => _db.Projects.ToList(), cancellationToken);
+            var projects = await _db.Projects.ToListAsync(cancellationToken);
             return RepositoryResult<List<Project>>.Ok(projects);
         }
         catch (Exception ex)

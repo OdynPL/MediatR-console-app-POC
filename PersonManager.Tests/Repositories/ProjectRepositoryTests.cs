@@ -19,7 +19,7 @@ namespace PersonManager.Tests.Repositories
             // Arrange
             var db = GetDbContext();
             var repo = new ProjectRepository(db);
-            var project = new Project { Title = "Test Project" };
+            var project = new Project { Title = "Test Project", Members = new List<Person>() };
 
             // Act
             var result = await repo.AddAsync(project, CancellationToken.None);
@@ -34,7 +34,7 @@ namespace PersonManager.Tests.Repositories
         {
             var db = GetDbContext();
             var repo = new ProjectRepository(db);
-            var project = new Project { Title = "FindMe" };
+            var project = new Project { Title = "FindMe", Members = new List<Person>() };
             await repo.AddAsync(project);
             await db.SaveChangesAsync();
             var result = await repo.GetByIdAsync(project.Id);
@@ -48,9 +48,9 @@ namespace PersonManager.Tests.Repositories
         {
             var db = GetDbContext();
             var repo = new ProjectRepository(db);
-            await repo.AddAsync(new Project { Title = "A" });
+            await repo.AddAsync(new Project { Title = "A", Members = new List<Person>() });
             await db.SaveChangesAsync();
-            await repo.AddAsync(new Project { Title = "B" });
+            await repo.AddAsync(new Project { Title = "B", Members = new List<Person>() });
             await db.SaveChangesAsync();
             var result = await repo.GetAllAsync();
             Assert.True(result.Success);
@@ -63,7 +63,7 @@ namespace PersonManager.Tests.Repositories
         {
             var db = GetDbContext();
             var repo = new ProjectRepository(db);
-            var project = new Project { Title = "Old" };
+            var project = new Project { Title = "Old", Members = new List<Person>() };
             await repo.AddAsync(project);
             await db.SaveChangesAsync();
             project.Title = "New";
@@ -78,7 +78,7 @@ namespace PersonManager.Tests.Repositories
         {
             var db = GetDbContext();
             var repo = new ProjectRepository(db);
-            var project = new Project { Title = "Del" };
+            var project = new Project { Title = "Del", Members = new List<Person>() };
             await repo.AddAsync(project);
             var result = await repo.DeleteAsync(project.Id);
             Assert.True(result.Success);

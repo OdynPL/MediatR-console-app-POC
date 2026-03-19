@@ -19,7 +19,7 @@ namespace PersonManager.Tests.Repositories
         {
             var db = GetDbContext();
             var repo = new CompanyRepository(db);
-            var company = new Company { Name = "TestCo" };
+            var company = new Company { Name = "TestCo", Employees = new List<Person>() };
             var result = await repo.AddAsync(company, CancellationToken.None);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -31,7 +31,7 @@ namespace PersonManager.Tests.Repositories
         {
             var db = GetDbContext();
             var repo = new CompanyRepository(db);
-            var company = new Company { Name = "FindMe" };
+            var company = new Company { Name = "FindMe", Employees = new List<Person>() };
             await repo.AddAsync(company);
             await db.SaveChangesAsync();
             var result = await repo.GetByIdAsync(company.Id);
@@ -45,9 +45,9 @@ namespace PersonManager.Tests.Repositories
         {
             var db = GetDbContext();
             var repo = new CompanyRepository(db);
-            await repo.AddAsync(new Company { Name = "A" });
+            await repo.AddAsync(new Company { Name = "A", Employees = new List<Person>() });
             await db.SaveChangesAsync();
-            await repo.AddAsync(new Company { Name = "B" });
+            await repo.AddAsync(new Company { Name = "B", Employees = new List<Person>() });
             await db.SaveChangesAsync();
             var result = await repo.GetAllAsync();
             Assert.True(result.Success);
@@ -60,7 +60,7 @@ namespace PersonManager.Tests.Repositories
         {
             var db = GetDbContext();
             var repo = new CompanyRepository(db);
-            var company = new Company { Name = "Old" };
+            var company = new Company { Name = "Old", Employees = new List<Person>() };
             await repo.AddAsync(company);
             await db.SaveChangesAsync();
             company.Name = "New";
@@ -75,7 +75,7 @@ namespace PersonManager.Tests.Repositories
         {
             var db = GetDbContext();
             var repo = new CompanyRepository(db);
-            var company = new Company { Name = "Del" };
+            var company = new Company { Name = "Del", Employees = new List<Person>() };
             await repo.AddAsync(company);
             var result = await repo.DeleteAsync(company.Id);
             Assert.True(result.Success);

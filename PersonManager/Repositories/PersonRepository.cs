@@ -11,6 +11,7 @@ namespace PersonManager.Repositories
         public PersonRepository(AppDbContext db)
         {
             _db = db;
+        _db = db;
         }
         public async Task<RepositoryResult<Person>> AddAsync(Person person, CancellationToken cancellationToken = default)
         {
@@ -44,7 +45,7 @@ namespace PersonManager.Repositories
         {
             try
             {
-                var people = await Task.Run(() => _db.People.ToList(), cancellationToken);
+                var people = await _db.People.ToListAsync(cancellationToken);
                 return RepositoryResult<List<Person>>.Ok(people);
             }
             catch (Exception ex)

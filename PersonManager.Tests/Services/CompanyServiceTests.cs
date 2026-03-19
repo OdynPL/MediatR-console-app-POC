@@ -14,7 +14,7 @@ namespace PersonManager.Tests.Services
         {
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             var repoMock = new Mock<ICompanyRepository>();
-            var company = new Company { Name = "TestCo" };
+            var company = new Company { Name = "TestCo", Employees = new List<Person>() };
             repoMock.Setup(r => r.AddAsync(company, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<Company> { Success = true, Data = company });
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);
@@ -31,7 +31,7 @@ namespace PersonManager.Tests.Services
         {
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             var repoMock = new Mock<ICompanyRepository>();
-            var company = new Company { Name = "FindMe" };
+            var company = new Company { Name = "FindMe", Employees = new List<Person>() };
             repoMock.Setup(r => r.GetByIdAsync(1, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<Company> { Success = true, Data = company });
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);
@@ -47,7 +47,7 @@ namespace PersonManager.Tests.Services
         {
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             var repoMock = new Mock<ICompanyRepository>();
-            var companies = new List<Company> { new Company { Name = "A" }, new Company { Name = "B" } };
+            var companies = new List<Company> { new Company { Name = "A", Employees = new List<Person>() }, new Company { Name = "B", Employees = new List<Person>() } };
             repoMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<List<Company>> { Success = true, Data = companies });
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);
@@ -63,7 +63,7 @@ namespace PersonManager.Tests.Services
         {
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             var repoMock = new Mock<ICompanyRepository>();
-            var company = new Company { Name = "Old" };
+            var company = new Company { Name = "Old", Employees = new List<Person>() };
             repoMock.Setup(r => r.UpdateAsync(company, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<Company> { Success = true, Data = company });
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);
@@ -108,7 +108,7 @@ namespace PersonManager.Tests.Services
         {
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             var repoMock = new Mock<ICompanyRepository>();
-            var company = new Company { Id = 42, Name = "Nowa" };
+            var company = new Company { Id = 42, Name = "Nowa", Employees = new List<Person>() };
             repoMock.Setup(r => r.AddAsync(It.IsAny<Company>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<Company> { Success = true, Data = company });
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);

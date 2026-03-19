@@ -13,7 +13,7 @@ namespace PersonManager.Tests.Services
         {
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             var repoMock = new Mock<IProjectRepository>();
-            var project = new Project { Title = "TestProject" };
+            var project = new Project { Title = "TestProject", Members = new List<Person>() };
             repoMock.Setup(r => r.AddAsync(project, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<Project> { Success = true, Data = project });
             unitOfWorkMock.Setup(u => u.ProjectRepository).Returns(repoMock.Object);
@@ -30,7 +30,7 @@ namespace PersonManager.Tests.Services
         {
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             var repoMock = new Mock<IProjectRepository>();
-            var project = new Project { Title = "FindMe" };
+            var project = new Project { Title = "FindMe", Members = new List<Person>() };
             repoMock.Setup(r => r.GetByIdAsync(1, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<Project> { Success = true, Data = project });
             unitOfWorkMock.Setup(u => u.ProjectRepository).Returns(repoMock.Object);
@@ -46,7 +46,7 @@ namespace PersonManager.Tests.Services
         {
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             var repoMock = new Mock<IProjectRepository>();
-            var projects = new List<Project> { new Project { Title = "A" }, new Project { Title = "B" } };
+            var projects = new List<Project> { new Project { Title = "A", Members = new List<Person>() }, new Project { Title = "B", Members = new List<Person>() } };
             repoMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<List<Project>> { Success = true, Data = projects });
             unitOfWorkMock.Setup(u => u.ProjectRepository).Returns(repoMock.Object);
@@ -62,7 +62,7 @@ namespace PersonManager.Tests.Services
         {
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             var repoMock = new Mock<IProjectRepository>();
-            var project = new Project { Title = "Old" };
+            var project = new Project { Title = "Old", Members = new List<Person>() };
             repoMock.Setup(r => r.UpdateAsync(project, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<Project> { Success = true, Data = project });
             unitOfWorkMock.Setup(u => u.ProjectRepository).Returns(repoMock.Object);
