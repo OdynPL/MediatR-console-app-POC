@@ -2,6 +2,7 @@ using PersonManager.Data;
 using PersonManager.Domain;
 using PersonManager.DTO;
 using Microsoft.EntityFrameworkCore;
+using PersonManager.Specifications;
 
 namespace PersonManager.Repositories
 {
@@ -86,6 +87,21 @@ namespace PersonManager.Repositories
             catch (Exception ex)
             {
                 return RepositoryResult<bool>.Fail(ex.Message);
+            }
+        }
+
+        public async Task<RepositoryResult<List<Person>>> GetBySpecificationAsync(ISpecification<Person> specification, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var people = await _db.People
+                    .Where(specification.Criteria)
+                    .ToListAsync(cancellationToken);
+                return RepositoryResult<List<Person>>.Ok(people);
+            }
+            catch (Exception ex)
+            {
+                return RepositoryResult<List<Person>>.Fail(ex.Message);
             }
         }
 

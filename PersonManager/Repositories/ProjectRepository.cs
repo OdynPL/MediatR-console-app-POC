@@ -2,6 +2,7 @@ using PersonManager.Data;
 using PersonManager.Domain;
 using PersonManager.DTO;
 using Microsoft.EntityFrameworkCore;
+using PersonManager.Specifications;
 public class ProjectRepository : IProjectRepository
 {
     private readonly AppDbContext _db;
@@ -77,6 +78,21 @@ public class ProjectRepository : IProjectRepository
     public IQueryable<Project> GetQueryable()
     {
         return _db.Projects.AsQueryable();
+    }
+
+    public async Task<RepositoryResult<List<Project>>> GetBySpecificationAsync(ISpecification<Project> specification, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var projects = await _db.Projects
+                .Where(specification.Criteria)
+                .ToListAsync(cancellationToken);
+            return RepositoryResult<List<Project>>.Ok(projects);
+        }
+        catch (Exception ex)
+        {
+            return RepositoryResult<List<Project>>.Fail(ex.Message);
+        }
     }
 }
 

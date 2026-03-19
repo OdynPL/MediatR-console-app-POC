@@ -1,6 +1,7 @@
 using PersonManager.Domain;
 using PersonManager.Data;
 using Microsoft.EntityFrameworkCore;
+using PersonManager.Repositories;
 
 namespace PersonManager.Tests.Repositories
 {
