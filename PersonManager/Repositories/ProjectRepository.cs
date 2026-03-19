@@ -17,6 +17,7 @@ public class ProjectRepository : IProjectRepository
         try
         {
             await _db.Projects.AddAsync(project, cancellationToken);
+            await _db.SaveChangesAsync(cancellationToken);
             return RepositoryResult<Project>.Ok(project);
         }
         catch (Exception ex)
@@ -57,6 +58,7 @@ public class ProjectRepository : IProjectRepository
         try
         {
             _db.Projects.Update(project);
+            await _db.SaveChangesAsync(cancellationToken);
             return RepositoryResult<Project>.Ok(project);
         }
         catch (Exception ex)
@@ -72,6 +74,7 @@ public class ProjectRepository : IProjectRepository
             if (project == null)
                 return RepositoryResult<bool>.Fail("Project not found");
             _db.Projects.Remove(project);
+            await _db.SaveChangesAsync(cancellationToken);
             return RepositoryResult<bool>.Ok(true);
         }
         catch (Exception ex)

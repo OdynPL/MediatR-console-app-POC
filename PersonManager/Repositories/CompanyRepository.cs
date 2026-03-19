@@ -20,6 +20,7 @@ namespace PersonManager.Repositories
             try
             {
                 await _db.Companies.AddAsync(company, cancellationToken);
+                await _db.SaveChangesAsync(cancellationToken);
                 return RepositoryResult<Company>.Ok(company);
             }
             catch (Exception ex)
@@ -60,6 +61,7 @@ namespace PersonManager.Repositories
             try
             {
                 _db.Companies.Update(company);
+                await _db.SaveChangesAsync(cancellationToken);
                 return RepositoryResult<Company>.Ok(company);
             }
             catch (Exception ex)
@@ -75,6 +77,7 @@ namespace PersonManager.Repositories
                 if (company == null)
                     return RepositoryResult<bool>.Fail("Company not found");
                 _db.Companies.Remove(company);
+                await _db.SaveChangesAsync(cancellationToken);
                 return RepositoryResult<bool>.Ok(true);
             }
             catch (Exception ex)

@@ -20,6 +20,7 @@ namespace PersonManager.Repositories
             try
             {
                 await _db.People.AddAsync(person, cancellationToken);
+                await _db.SaveChangesAsync(cancellationToken);
                 return RepositoryResult<Person>.Ok(person);
             }
             catch (Exception ex)

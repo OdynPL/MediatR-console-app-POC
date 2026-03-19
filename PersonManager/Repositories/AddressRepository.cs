@@ -20,6 +20,7 @@ namespace PersonManager.Repositories
             try
             {
                 await _db.Addresses.AddAsync(address, cancellationToken);
+                await _db.SaveChangesAsync(cancellationToken);
                 return RepositoryResult<Address>.Ok(address);
             }
             catch (Exception ex)
@@ -60,6 +61,7 @@ namespace PersonManager.Repositories
             try
             {
                 _db.Addresses.Update(address);
+                await _db.SaveChangesAsync(cancellationToken);
                 return RepositoryResult<Address>.Ok(address);
             }
             catch (Exception ex)
@@ -75,6 +77,7 @@ namespace PersonManager.Repositories
                 if (address == null)
                     return RepositoryResult<bool>.Fail("Address not found");
                 _db.Addresses.Remove(address);
+                await _db.SaveChangesAsync(cancellationToken);
                 return RepositoryResult<bool>.Ok(true);
             }
             catch (Exception ex)
