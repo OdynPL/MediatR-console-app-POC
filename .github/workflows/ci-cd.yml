@@ -43,9 +43,10 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
+          git remote set-url origin https://$env:GH_PAT@github.com/OdynPL/MediatR-console-app-POC.git
           git add PersonManager/PersonManager.csproj
           git commit -m "increase release version"
-          git push https://$env:GH_PAT@github.com/OdynPL/MediatR-console-app-POC.git HEAD:main
+          git push origin HEAD:main
       - uses: actions/checkout@v4
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
