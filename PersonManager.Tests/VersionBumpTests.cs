@@ -5,36 +5,63 @@ namespace PersonManager.Tests
         [Fact]
         public void CsprojVersion_ShouldChange_AfterBumpScript()
         {
-            // Arrange
+            // UWAGA: Test nie jest izolowany, wykonuje rzeczywisty skrypt i modyfikuje plik produkcyjny.
+            // W idealnej sytuacji należałoby mockować operacje na plikach/skryptach.
+
             var repoRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
             var csprojPath = Path.Combine(repoRoot, "PersonManager", "PersonManager.csproj");
-            var original = File.ReadAllText(csprojPath);
-            var originalVersion = GetVersion(original);
-
-            // Act
-            var psi = new System.Diagnostics.ProcessStartInfo
+            string? original = null;
+            string? originalVersion = null;
+            try
             {
-                FileName = "powershell",
-                Arguments = $"-File bump-version.ps1",
-                WorkingDirectory = repoRoot,
-                RedirectStandardOutput = true,
-                UseShellExecute = false
-            };
-            var process = System.Diagnostics.Process.Start(psi);
-            process.WaitForExit();
+                original = File.ReadAllText(csprojPath);
+                originalVersion = GetVersion(original);
 
-            var updated = File.ReadAllText(csprojPath);
-            var updatedVersion = GetVersion(updated);
+                // Act
+                var psi = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "powershell",
+                    Arguments = $"-File bump-version.ps1",
+                    WorkingDirectory = repoRoot,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false
+                };
+                var process = System.Diagnostics.Process.Start(psi);
+                process.WaitForExit();
 
-            // Assert
-            Assert.NotEqual(originalVersion, updatedVersion);
+                var updated = File.ReadAllText(csprojPath);
+                var updatedVersion = GetVersion(updated);
+
+                // Assert
+                Assert.NotEqual(originalVersion, updatedVersion);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail($"Test failed: {ex.Message}");
+            }
+            finally
+            {
+                // Cleanup: przywrócenie oryginalnej wersji
+                if (!string.IsNullOrEmpty(original))
+                {
+                    File.WriteAllText(csprojPath, original);
+                }
+            }
         }
 
         private string GetVersion(string csprojContent)
         {
-            var start = csprojContent.IndexOf("<Version>") + "<Version>".Length;
-            var end = csprojContent.IndexOf("</Version>");
-            return csprojContent.Substring(start, end - start).Trim();
+            var startTag = "<Version>";
+            var endTag = "</Version>";
+            var start = csprojContent.IndexOf(startTag);
+            var end = csprojContent.IndexOf(endTag);
+            if (start == -1 || end == -1 || end <= start)
+                throw new InvalidOperationException("Tag <Version> nie został znaleziony w pliku csproj.");
+            start += startTag.Length;
+            var version = csprojContent.Substring(start, end - start).Trim();
+            if (string.IsNullOrEmpty(version))
+                throw new InvalidOperationException("Nie można odczytać wersji z pliku csproj.");
+            return version;
         }
     }
 }
