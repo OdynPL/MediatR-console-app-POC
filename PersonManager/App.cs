@@ -1,13 +1,13 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PersonManager.Domain;
 using FluentValidation;
 using PersonManager.Repositories;
 using PersonManager.Data;
 using PersonManager.Services;
 using PersonManager.Handlers;
 using Microsoft.Extensions.Configuration;
-
 namespace PersonManager
 {
     public static class App
@@ -39,6 +39,21 @@ namespace PersonManager
                     provider.GetRequiredService<IAddressRepository>(),
                     provider.GetRequiredService<ICompanyRepository>(),
                     provider.GetRequiredService<IProjectRepository>()
+                ));
+
+            // Rejestracja HttpClientFactory z Polly
+            services.AddHttpClient("PersonApi", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:5000/"); // Podmień na adres produkcyjny
+                client.Timeout = TimeSpan.FromSeconds(10);
+            });
+
+            // Rejestracja generycznego RestApiService dla Person
+            services.AddScoped<IApiService<Person>>(provider =>
+                new RestApiService<Person>(
+                    provider.GetRequiredService<IHttpClientFactory>(),
+                    "PersonApi",
+                    "api/person"
                 ));
 
             services.AddScoped<IPersonService, PersonService>();
