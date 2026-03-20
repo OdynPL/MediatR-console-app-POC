@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PersonManager\PersonManager.csproj" />
-    <ProjectReference Include="..\PersonManager\PersonManager.csproj" />
   </ItemGroup>
 
 </Project>

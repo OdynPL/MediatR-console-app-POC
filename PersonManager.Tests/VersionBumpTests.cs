@@ -27,6 +27,8 @@ namespace PersonManager.Tests
                     UseShellExecute = false
                 };
                 var process = System.Diagnostics.Process.Start(psi);
+                if (process == null)
+                    throw new InvalidOperationException("Nie udało się uruchomić procesu bump-version.ps1.");
                 process.WaitForExit();
 
                 var updated = File.ReadAllText(csprojPath);
