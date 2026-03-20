@@ -31,6 +31,11 @@ namespace PersonManager
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<ILoggerService>(provider =>
+                new LoggerService(
+                    provider.GetRequiredService<Microsoft.Extensions.Logging.ILogger<LoggerService>>(),
+                    System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), GlobalConfig.LogFilePath)
+                ));
 
             services.AddScoped<UnitOfWork.IUnitOfWork>(provider =>
                 new UnitOfWork.UnitOfWork(
@@ -53,7 +58,8 @@ namespace PersonManager
                 new RestApiService<Person>(
                     provider.GetRequiredService<IHttpClientFactory>(),
                     "PersonApi",
-                    "api/person"
+                    "api/person",
+                    provider.GetRequiredService<ILoggerService>()
                 ));
 
             services.AddScoped<IPersonService, PersonService>();

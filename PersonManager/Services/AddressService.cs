@@ -7,16 +7,23 @@ namespace PersonManager.Services
     public class AddressService : IAddressService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public AddressService(IUnitOfWork unitOfWork)
+        private readonly ILoggerService _logger;
+        public AddressService(IUnitOfWork unitOfWork, ILoggerService logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
         public async Task<RepositoryResult<Address>> AddAddressAsync(Address address, CancellationToken cancellationToken = default)
         {
+            _logger.LogInfo($"Dodawanie adresu: {address.Street}, {address.City}");
             var result = await _unitOfWork.AddressRepository.AddAsync(address, cancellationToken);
             if (!result.Success)
+            {
+                _logger.LogWarning($"Nieudane dodanie adresu: {address.Street}, {address.City}");
                 return result;
+            }
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _logger.LogInfo($"Adres dodany: {address.Street}, {address.City}");
             return result;
         }
         public async Task<RepositoryResult<Address>> GetAddressByIdAsync(int id, CancellationToken cancellationToken = default)

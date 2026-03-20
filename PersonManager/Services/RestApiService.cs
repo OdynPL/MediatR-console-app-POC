@@ -9,12 +9,14 @@ namespace PersonManager.Services
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _clientName;
         private readonly string _endpoint;
+        private readonly ILoggerService _logger;
 
-        public RestApiService(IHttpClientFactory httpClientFactory, string clientName, string endpoint)
+        public RestApiService(IHttpClientFactory httpClientFactory, string clientName, string endpoint, ILoggerService logger)
         {
             _httpClientFactory = httpClientFactory;
             _clientName = clientName;
             _endpoint = endpoint;
+            _logger = logger;
         }
 
         public async Task<ApiResult<T>> GetAsync(int id, CancellationToken cancellationToken = default)
@@ -32,7 +34,7 @@ namespace PersonManager.Services
             }
             catch (Exception ex)
             {
-                // Tu można dodać logowanie
+                _logger.LogError($"REST: Wyjątek w GetAsync: {ex.Message}");
                 return ApiResult<T>.Fail($"REST: Wyjątek: {ex.Message}");
             }
         }
@@ -59,6 +61,7 @@ namespace PersonManager.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError($"REST: Wyjątek w GetAllAsync: {ex.Message}");
                 return ApiResult<IEnumerable<T>>.Fail($"REST: Wyjątek: {ex.Message}");
             }
         }
@@ -78,6 +81,7 @@ namespace PersonManager.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError($"REST: Wyjątek w AddAsync: {ex.Message}");
                 return ApiResult<T>.Fail($"REST: Wyjątek: {ex.Message}");
             }
         }
@@ -101,6 +105,7 @@ namespace PersonManager.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError($"REST: Wyjątek w UpdateAsync: {ex.Message}");
                 return ApiResult<T>.Fail($"REST: Wyjątek: {ex.Message}");
             }
         }
@@ -117,6 +122,7 @@ namespace PersonManager.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError($"REST: Wyjątek w DeleteAsync: {ex.Message}");
                 return ApiResult<bool>.Fail($"REST: Wyjątek: {ex.Message}");
             }
         }

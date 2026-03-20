@@ -7,16 +7,23 @@ namespace PersonManager.Services
     public class CompanyService : ICompanyService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CompanyService(IUnitOfWork unitOfWork)
+        private readonly ILoggerService _logger;
+        public CompanyService(IUnitOfWork unitOfWork, ILoggerService logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
         public async Task<RepositoryResult<Company>> AddCompanyAsync(Company company, CancellationToken cancellationToken = default)
         {
+            _logger.LogInfo($"Dodawanie firmy: {company.Name}");
             var result = await _unitOfWork.CompanyRepository.AddAsync(company, cancellationToken);
             if (!result.Success)
+            {
+                _logger.LogWarning($"Nieudane dodanie firmy: {company.Name}");
                 return result;
+            }
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _logger.LogInfo($"Firma dodana: {company.Name}");
             return result;
         }
         public async Task<RepositoryResult<Company>> GetCompanyByIdAsync(int id, CancellationToken cancellationToken = default)

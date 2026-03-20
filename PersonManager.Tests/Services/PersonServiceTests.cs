@@ -19,7 +19,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<Person> { Success = true, Data = person });
             unitOfWorkMock.Setup(u => u.PersonRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new PersonService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new PersonService(unitOfWorkMock.Object, loggerMock.Object);
 
             var result = await service.AddPersonAsync(person, CancellationToken.None);
 
@@ -37,7 +38,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.AddAsync(person, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(RepositoryResult<Person>.Fail("error"));
             unitOfWorkMock.Setup(u => u.PersonRepository).Returns(repoMock.Object);
-            var service = new PersonService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new PersonService(unitOfWorkMock.Object, loggerMock.Object);
 
             var result = await service.AddPersonAsync(person, CancellationToken.None);
 
@@ -54,7 +56,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.GetByIdAsync(1, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(RepositoryResult<Person>.Ok(person));
             unitOfWorkMock.Setup(u => u.PersonRepository).Returns(repoMock.Object);
-            var service = new PersonService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new PersonService(unitOfWorkMock.Object, loggerMock.Object);
 
             var result = await service.GetPersonByIdAsync(1, CancellationToken.None);
 
@@ -71,7 +74,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.GetByIdAsync(2, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(RepositoryResult<Person>.Fail("not found"));
             unitOfWorkMock.Setup(u => u.PersonRepository).Returns(repoMock.Object);
-            var service = new PersonService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new PersonService(unitOfWorkMock.Object, loggerMock.Object);
 
             var result = await service.GetPersonByIdAsync(2, CancellationToken.None);
 
@@ -88,7 +92,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(RepositoryResult<List<Person>>.Ok(people));
             unitOfWorkMock.Setup(u => u.PersonRepository).Returns(repoMock.Object);
-            var service = new PersonService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new PersonService(unitOfWorkMock.Object, loggerMock.Object);
 
             var result = await service.GetAllPersonsAsync(CancellationToken.None);
 
@@ -105,7 +110,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(RepositoryResult<List<Person>>.Fail("db error"));
             unitOfWorkMock.Setup(u => u.PersonRepository).Returns(repoMock.Object);
-            var service = new PersonService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new PersonService(unitOfWorkMock.Object, loggerMock.Object);
 
             var result = await service.GetAllPersonsAsync(CancellationToken.None);
 
@@ -123,7 +129,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(RepositoryResult<Person>.Ok(person));
             unitOfWorkMock.Setup(u => u.PersonRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new PersonService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new PersonService(unitOfWorkMock.Object, loggerMock.Object);
 
             var result = await service.UpdatePersonAsync(person, CancellationToken.None);
 
@@ -141,7 +148,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.UpdateAsync(person, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(RepositoryResult<Person>.Fail("update error"));
             unitOfWorkMock.Setup(u => u.PersonRepository).Returns(repoMock.Object);
-            var service = new PersonService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new PersonService(unitOfWorkMock.Object, loggerMock.Object);
 
             var result = await service.UpdatePersonAsync(person, CancellationToken.None);
 
@@ -158,7 +166,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(RepositoryResult<bool>.Ok(true));
             unitOfWorkMock.Setup(u => u.PersonRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new PersonService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new PersonService(unitOfWorkMock.Object, loggerMock.Object);
 
             var result = await service.DeletePersonAsync(1, CancellationToken.None);
 
@@ -174,7 +183,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.DeleteAsync(2, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(RepositoryResult<bool>.Fail("delete error"));
             unitOfWorkMock.Setup(u => u.PersonRepository).Returns(repoMock.Object);
-            var service = new PersonService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new PersonService(unitOfWorkMock.Object, loggerMock.Object);
 
             var result = await service.DeletePersonAsync(2, CancellationToken.None);
 
@@ -190,7 +200,8 @@ namespace PersonManager.Tests.Services
             var people = new List<Person> { new Person { Name = "Jan", Age = 30 } }.AsQueryable();
             repoMock.Setup(r => r.GetQueryable()).Returns(people);
             unitOfWorkMock.Setup(u => u.PersonRepository).Returns(repoMock.Object);
-            var service = new PersonService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new PersonService(unitOfWorkMock.Object, loggerMock.Object);
 
             var result = service.GetQueryablePersons();
 

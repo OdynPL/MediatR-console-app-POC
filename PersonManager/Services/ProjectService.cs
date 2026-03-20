@@ -11,16 +11,23 @@ namespace PersonManager.Services
     public class ProjectService : IProjectService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProjectService(IUnitOfWork unitOfWork)
+        private readonly ILoggerService _logger;
+        public ProjectService(IUnitOfWork unitOfWork, ILoggerService logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
         public async Task<DTO.RepositoryResult<Project>> AddProjectAsync(Project project, CancellationToken cancellationToken = default)
         {
+            _logger.LogInfo($"Dodawanie projektu: {project.Title}");
             var result = await _unitOfWork.ProjectRepository.AddAsync(project, cancellationToken);
             if (!result.Success)
+            {
+                _logger.LogWarning($"Nieudane dodanie projektu: {project.Title}");
                 return result;
+            }
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _logger.LogInfo($"Projekt dodany: {project.Title}");
             return result;
         }
         public async Task<DTO.RepositoryResult<Project>> GetProjectByIdAsync(int id, CancellationToken cancellationToken = default)

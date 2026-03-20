@@ -18,7 +18,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<Project> { Success = true, Data = project });
             unitOfWorkMock.Setup(u => u.ProjectRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new ProjectService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new ProjectService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.AddProjectAsync(project, CancellationToken.None);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -34,7 +35,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.GetByIdAsync(1, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<Project> { Success = true, Data = project });
             unitOfWorkMock.Setup(u => u.ProjectRepository).Returns(repoMock.Object);
-            var service = new ProjectService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new ProjectService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.GetProjectByIdAsync(1);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -50,7 +52,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<List<Project>> { Success = true, Data = projects });
             unitOfWorkMock.Setup(u => u.ProjectRepository).Returns(repoMock.Object);
-            var service = new ProjectService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new ProjectService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.GetAllProjectsAsync();
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -67,7 +70,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<Project> { Success = true, Data = project });
             unitOfWorkMock.Setup(u => u.ProjectRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new ProjectService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new ProjectService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.UpdateProjectAsync(project);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -83,7 +87,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<bool> { Success = true, Data = true });
             unitOfWorkMock.Setup(u => u.ProjectRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new ProjectService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new ProjectService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.DeleteProjectAsync(1);
             Assert.True(result.Success);
             Assert.True(result.Data);
@@ -96,7 +101,8 @@ namespace PersonManager.Tests.Services
             var repoMock = new Mock<IProjectRepository>();
             repoMock.Setup(r => r.GetQueryable()).Returns(new List<Project>().AsQueryable());
             unitOfWorkMock.Setup(u => u.ProjectRepository).Returns(repoMock.Object);
-            var service = new ProjectService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new ProjectService(unitOfWorkMock.Object, loggerMock.Object);
             var queryable = service.GetQueryableProjects();
             Assert.NotNull(queryable);
             Assert.IsAssignableFrom<IQueryable<Project>>(queryable);

@@ -19,7 +19,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<Company> { Success = true, Data = company });
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new CompanyService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new CompanyService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.AddCompanyAsync(company, CancellationToken.None);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -35,7 +36,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.GetByIdAsync(1, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<Company> { Success = true, Data = company });
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);
-            var service = new CompanyService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new CompanyService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.GetCompanyByIdAsync(1);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -51,7 +53,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<List<Company>> { Success = true, Data = companies });
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);
-            var service = new CompanyService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new CompanyService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.GetAllCompaniesAsync();
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -68,7 +71,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<Company> { Success = true, Data = company });
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new CompanyService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new CompanyService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.UpdateCompanyAsync(company);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -84,7 +88,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<bool> { Success = true, Data = true });
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new CompanyService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new CompanyService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.DeleteCompanyAsync(1);
             Assert.True(result.Success);
             Assert.True(result.Data);
@@ -97,7 +102,8 @@ namespace PersonManager.Tests.Services
             var repoMock = new Mock<ICompanyRepository>();
             repoMock.Setup(r => r.GetQueryable()).Returns(new List<Company>().AsQueryable());
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);
-            var service = new CompanyService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new CompanyService(unitOfWorkMock.Object, loggerMock.Object);
             var queryable = service.GetQueryableCompanies();
             Assert.NotNull(queryable);
             Assert.IsAssignableFrom<IQueryable<Company>>(queryable);
@@ -113,7 +119,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<Company> { Success = true, Data = company });
             unitOfWorkMock.Setup(u => u.CompanyRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new CompanyService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new CompanyService(unitOfWorkMock.Object, loggerMock.Object);
             var id = await service.CreateCompanyAsync("Nowa");
             Assert.Equal(42, id);
         }

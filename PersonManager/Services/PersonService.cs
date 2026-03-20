@@ -7,16 +7,23 @@ namespace PersonManager.Services
     public class PersonService : IPersonService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public PersonService(IUnitOfWork unitOfWork)
+        private readonly ILoggerService _logger;
+        public PersonService(IUnitOfWork unitOfWork, ILoggerService logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
         public async Task<RepositoryResult<Person>> AddPersonAsync(Person person, CancellationToken cancellationToken = default)
         {
+            _logger.LogInfo($"Dodawanie osoby: {person.Name}");
             var result = await _unitOfWork.PersonRepository.AddAsync(person, cancellationToken);
             if (!result.Success)
+            {
+                _logger.LogWarning($"Nieudane dodanie osoby: {person.Name}");
                 return result;
+            }
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _logger.LogInfo($"Osoba dodana: {person.Name}");
             return result;
         }
 

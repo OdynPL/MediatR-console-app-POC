@@ -19,7 +19,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<Address> { Success = true, Data = address });
             unitOfWorkMock.Setup(u => u.AddressRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new AddressService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new AddressService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.AddAddressAsync(address, CancellationToken.None);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -35,7 +36,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.GetByIdAsync(1, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<Address> { Success = true, Data = address });
             unitOfWorkMock.Setup(u => u.AddressRepository).Returns(repoMock.Object);
-            var service = new AddressService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new AddressService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.GetAddressByIdAsync(1);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -51,7 +53,8 @@ namespace PersonManager.Tests.Services
             repoMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RepositoryResult<List<Address>> { Success = true, Data = addresses });
             unitOfWorkMock.Setup(u => u.AddressRepository).Returns(repoMock.Object);
-            var service = new AddressService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new AddressService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.GetAllAddressesAsync();
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -68,7 +71,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<Address> { Success = true, Data = address });
             unitOfWorkMock.Setup(u => u.AddressRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new AddressService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new AddressService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.UpdateAddressAsync(address);
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
@@ -84,7 +88,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<bool> { Success = true, Data = true });
             unitOfWorkMock.Setup(u => u.AddressRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new AddressService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new AddressService(unitOfWorkMock.Object, loggerMock.Object);
             var result = await service.DeleteAddressAsync(1);
             Assert.True(result.Success);
             Assert.True(result.Data);
@@ -97,7 +102,8 @@ namespace PersonManager.Tests.Services
             var repoMock = new Mock<IAddressRepository>();
             repoMock.Setup(r => r.GetQueryable()).Returns(new List<Address>().AsQueryable());
             unitOfWorkMock.Setup(u => u.AddressRepository).Returns(repoMock.Object);
-            var service = new AddressService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new AddressService(unitOfWorkMock.Object, loggerMock.Object);
             var queryable = service.GetQueryableAddresses();
             Assert.NotNull(queryable);
             Assert.IsAssignableFrom<IQueryable<Address>>(queryable);
@@ -113,7 +119,8 @@ namespace PersonManager.Tests.Services
                 .ReturnsAsync(new RepositoryResult<Address> { Success = true, Data = address });
             unitOfWorkMock.Setup(u => u.AddressRepository).Returns(repoMock.Object);
             unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
-            var service = new AddressService(unitOfWorkMock.Object);
+            var loggerMock = new Mock<ILoggerService>();
+            var service = new AddressService(unitOfWorkMock.Object, loggerMock.Object);
             var id = await service.CreateAddressAsync("Nowa", "Miasto", "PL");
             Assert.Equal(42, id);
         }

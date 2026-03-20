@@ -23,7 +23,8 @@ namespace PersonManager.Tests.Services
             };
             var factoryMock = new Mock<IHttpClientFactory>();
             factoryMock.Setup(f => f.CreateClient(It.IsAny<string>())).Returns(client);
-            return new RestApiService<TestDto>(factoryMock.Object, "TestApi", "api/test");
+            var loggerMock = new Mock<ILoggerService>();
+            return new RestApiService<TestDto>(factoryMock.Object, "TestApi", "api/test", loggerMock.Object);
         }
 
         [Fact]
